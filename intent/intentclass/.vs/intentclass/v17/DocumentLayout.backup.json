@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\okara\\Documents\\CHATBOT\\intent\\intentclass\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{FDC4AB5C-868C-4D18-B1F5-D4730B8E9C0F}|intentclass\\intentclass.pyproj|C:\\Users\\okara\\Documents\\CHATBOT\\intent\\intentclass\\intentclass\\intentclass.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{FDC4AB5C-868C-4D18-B1F5-D4730B8E9C0F}|intentclass\\intentclass.pyproj|solutionrelative:intentclass\\intentclass.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "intentclass.py",
+              "DocumentMoniker": "C:\\Users\\okara\\Documents\\CHATBOT\\intent\\intentclass\\intentclass\\intentclass.py",
+              "RelativeDocumentMoniker": "intentclass\\intentclass.py",
+              "ToolTip": "C:\\Users\\okara\\Documents\\CHATBOT\\intent\\intentclass\\intentclass\\intentclass.py",
+              "RelativeToolTip": "intentclass\\intentclass.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFYAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-21T23:46:50.288Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
