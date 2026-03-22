@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import string
+import re
 
 
 class TurkishTextPreprocessor:
@@ -16,17 +16,16 @@ class TurkishTextPreprocessor:
     def remove_punctuation(text: str) -> str:
         if not text:
             return ""
-        translator = str.maketrans(
-            string.punctuation, ' ' * len(string.punctuation)
-        )
-        return text.translate(translator)
+        # Unicode destekli noktalama temizliği (Harf, rakam ve boşluk olmayanları siler)
+        temiz_metin = re.sub(r'[^\w\s]', ' ', text)
+        return temiz_metin.replace('_', ' ')
 
     @staticmethod
-    def tokenize(text: str) -> list:
+    def tokenize(text: str) -> list[str]:
         return text.split()
 
     @classmethod
-    def process(cls, text: str) -> list:
+    def process(cls, text: str) -> list[str]:
         text = cls.lowercase_tr(text)
         text = cls.remove_punctuation(text)
         return cls.tokenize(text)
@@ -76,9 +75,21 @@ class IntentClassifier:
         if max_score == 0:
             return "unknown"
             
-        return max(intent_scores, key=intent_scores.get)
+        # Eşitlik (Tie-break) Kontrolü
+        en_yuksek_niyetler = [
+            intent for intent, score in intent_scores.items() 
+            if score == max_score
+        ]
+        
+        # Eğer birden fazla niyet aynı (en yüksek) puanı aldıysa kararsız kal ve unknown dön
+        if len(en_yuksek_niyetler) > 1:
+            return "unknown"
+            
+        # Sadece net bir kazanan varsa onu döndür
+        return en_yuksek_niyetler[0]
 
-    # --- İNTERAKTİF TEST BÖLÜMÜ ---
+
+# --- İNTERAKTİF TEST BÖLÜMÜ ---
 if __name__ == "__main__":
     print("-" * 50)
     print("Niyet Sınıflandırıcı Başlatıldı!")
