@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
 import string
 
+
 class TurkishTextPreprocessor:
     """Türkçe metinler için kural tabanlı ön işleme (preprocessing) adımları."""
     
     @staticmethod
     def lowercase_tr(text: str) -> str:
-        if not text: return ""
+        if not text:
+            return ""
         text = text.replace("I", "ı").replace("İ", "i")
         return text.lower()
 
     @staticmethod
     def remove_punctuation(text: str) -> str:
-        if not text: return ""
-        translator = str.maketrans(string.punctuation, ' ' * len(string.punctuation))
+        if not text:
+            return ""
+        translator = str.maketrans(
+            string.punctuation, ' ' * len(string.punctuation)
+        )
         return text.translate(translator)
 
     @staticmethod
@@ -31,10 +36,22 @@ class IntentClassifier:
     """Durumsuz (stateless), sınıf seviyesinde çalışan modüler niyet sınıflandırıcı."""
     
     INTENTS = {
-        "course_info": ["ders", "müfredat", "kredi", "akts", "sınav", "vize", "final", "ödev", "geçme", "not", "proje","quiz",],
-        "academic_staff": ["hoca", "profesör", "akademisyen", "öğretim", "asistan", "danışman", "kim", "görevli"],
-        "contact_info": ["iletişim", "telefon", "mail", "posta", "adres", "nerede", "ulaşım", "konum", "fax", "ofis","oda"],
-        "general_info": ["üniversite", "kampüs", "rektör", "tarihçe", "yurt", "burs", "yemekhane", "kütüphane"]
+        "course_info": [
+            "ders", "müfredat", "kredi", "akts", "sınav", "vize",
+            "final", "ödev", "geçme", "not", "proje", "quiz",
+        ],
+        "academic_staff": [
+            "hoca", "profesör", "akademisyen", "öğretim", "asistan",
+            "danışman", "kim", "görevli",
+        ],
+        "contact_info": [
+            "iletişim", "telefon", "mail", "posta", "adres", "nerede",
+            "ulaşım", "konum", "fax", "ofis", "oda",
+        ],
+        "general_info": [
+            "üniversite", "kampüs", "rektör", "tarihçe", "yurt",
+            "burs", "yemekhane", "kütüphane",
+        ]
     }
 
     @classmethod
@@ -61,7 +78,7 @@ class IntentClassifier:
             
         return max(intent_scores, key=intent_scores.get)
 
-# --- İNTERAKTİF TEST BÖLÜMÜ ---
+    # --- İNTERAKTİF TEST BÖLÜMÜ ---
 if __name__ == "__main__":
     print("-" * 50)
     print("Niyet Sınıflandırıcı Başlatıldı!")
@@ -69,19 +86,15 @@ if __name__ == "__main__":
     print("-" * 50)
 
     while True:
-        # 1. Kullanıcıdan soruyu al
         kullanici_sorusu = input("\nSoru sorun: ")
 
-        # 2. Çıkış komutlarını kontrol et
         if kullanici_sorusu.lower().strip() in ['q', 'çıkış', 'exit', 'quit']:
             print("Sistemden çıkılıyor. İyi çalışmalar!")
             break
 
-        # 3. Boş girdi kontrolü
         if not kullanici_sorusu.strip():
             print("Lütfen bir soru girin.")
             continue
 
-        # 4. Niyeti tahmin et ve yazdır
         sonuc = IntentClassifier.predict(kullanici_sorusu)
         print(f"Tespit Edilen Niyet: {sonuc}")
