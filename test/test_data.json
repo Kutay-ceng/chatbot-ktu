@@ -1,0 +1,62 @@
+[
+  {
+    "question": "KTÜ Bilgisayar Mühendisliği Bölümü hangi programlarda eğitim veriyor?",
+    "intent": "general_info"
+  },
+  {
+    "question": "Lisans eğitimini bitiren öğrencilere hangi unvan verilir?",
+    "intent": "general_info"
+  },
+  {
+    "question": "İngilizce hazırlık eğitimi var mı?",
+    "intent": "general_info"
+  },
+  {
+    "question": "Derslerin içerikleri ve AKTS bilgilerini nereden görebilirim?",
+    "intent": "course_info"
+  },
+  {
+    "question": "Haftalık ders ve sınav programlarına nasıl ulaşırım?",
+    "intent": "course_info"
+  },
+  {
+    "question": "Staj zorunluluğu toplam kaç gün?",
+    "intent": "course_info"
+  },
+  {
+    "question": "Bölüm başkanı Mustafa Ulutaş'a nasıl ulaşırım?",
+    "intent": "academic_staff"
+  },
+  {
+    "question": "Danışman hocadan randevu nasıl alınır?",
+    "intent": "academic_staff"
+  },
+  {
+    "question": "Bölümde hangi anabilim dalları var?",
+    "intent": "academic_staff"
+  },
+  {
+    "question": "Bölümün telefon numarası ve adresi nedir?",
+    "intent": "contact_info"
+  },
+  {
+    "question": "Bölüm sekreterliğine mail nasıl atabilirim?",
+    "intent": "contact_info"
+  },
+  {
+    "question": "Laboratuvar teknik sorumluları kimler?",
+    "intent": "contact_info"
+  },
+  {
+    "question": "Trabzon'da bugün hava nasıl?",
+    "intent": "unknown"
+  },
+  {
+    "question": "Yemekhanede ne yemek var?",
+    "intent": "general_info"
+  },
+  {
+    "question": "Akademik takvime nereden bakabilirim?",
+    "intent": "course_info"
+  }
+]
