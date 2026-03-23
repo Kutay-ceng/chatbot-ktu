@@ -38,18 +38,21 @@ class IntentClassifier:
         "course_info": [
             "ders", "müfredat", "kredi", "akts", "sınav", "vize",
             "final", "ödev", "geçme", "not", "proje", "quiz",
+            "staj", "takvim", "dönem",
         ],
         "academic_staff": [
             "hoca", "profesör", "akademisyen", "öğretim", "asistan",
-            "danışman", "kim", "görevli",
+            "danışman", "görevli", "başkan", "anabilim",
         ],
         "contact_info": [
-            "iletişim", "telefon", "mail", "posta", "adres", "nerede",
+            "iletişim", "telefon", "mail", "posta", "adres",
             "ulaşım", "konum", "fax", "ofis", "oda",
+            "laboratuvar", "teknik", "sorumlu", "sekreter",
         ],
         "general_info": [
             "üniversite", "kampüs", "rektör", "tarihçe", "yurt",
             "burs", "yemekhane", "kütüphane",
+            "program", "eğitim", "lisans", "hazırlık", "ingilizce", "unvan",
         ]
     }
 
