@@ -36,36 +36,39 @@ class IntentClassifier:
     
     INTENTS = {
         "courses": [
-            "ders", "müfredat", "kredi", "akts", "sınav", "vize", "final", "ödev", "proje", "quiz", 
-            "staj", "program", "büt", "bütünleme", "telafi", "mazeret",
-            "geçme", "not", "çan", "harf", "ortalama", "gno", "ano", "transkript", "devamsızlık", "yoklama",
-            "kayıt", "seçmeli", "zorunlu", "çap", "yandal", "yaz", "muaf", "mezuniyet", "diploma", 
-            "yatay", "dikey", "erasmus", "farabi", "mevlana",
-            "network", "olasılık", "istatistik", "fizik", "işaret", "matematik", "database", 
-            "automata", "paralel", "algoritma", "microprocessor", "numerical", "analysis", 
-            "grafik", "madencili", "programlama", "programming", "web", "sinyal", "sistem", 
-            "devre", "software", "optimizasyon", "görüntü", "tasarım", "bitirme"
+            "ders", "müfredat", "kredi", "akts", "sınav", "vize", "final", "ödev", "proje", 
+            "quiz", "staj", "program", "büt", "bütünleme", "telafi", "mazeret",
+            "geçme", "not", "çan", "harf", "ortalama", "gno", "ano", "transkript", 
+            "devamsızlık", "yoklama", "kayıt", "seçmeli", "zorunlu", "çap", "yandal", 
+            "yaz", "muaf", "mezuniyet", "diploma", "yatay", "dikey", "erasmus", 
+            "farabi", "mevlana", "network", "olasılık", "istatistik", "fizik", "işaret", 
+            "matematik", "database", "automata", "paralel", "algoritma", "microprocessor", 
+            "numerical", "analysis", "grafik", "madencili", "programlama", "programming", 
+            "web", "sinyal", "sistem", "devre", "software", "optimizasyon", "görüntü", 
+            "tasarım", "bitirme"
         ],
         "academic_staff": [
             "hoca", "profesör", "akademisyen", "öğretim", "asistan", "danışman", "görevli", 
-            "başkan", "doçent", "doktor", "dekan", "rektör", 
-            "kim", "görüşme", "müsait", "hangi", "veriyor",
-            "bekir", "murat", "cemal", "vasif", "güzin", "mustafa", "tuğrul", "selen", "sedat", 
-            "hüseyin", "beste", "şeyma", "selçuk", "bahar", "gül", "zafer", "ömer", "burak", 
-            "metehan", "samet", "seda", "muhammed", "orhan", "batuhan", "büşra",
-            "dizdaroğlu", "ekinci", "köse", "nabiyev", "ulutaş", "çavdar", "ayas", "görmüş", 
-            "pehlivan", "üstübioğlu", "aykut", "aymaz", "cevher", "hatipoğlu", "yılmaz", 
-            "tahaoğlu", "yavuz", "çakır", "aydın", "bulut", "dinçer", "efendioğlu", "kılıç", 
-            "sivaz", "çimşit", "özkellekci"
+            "başkan", "doçent", "doktor", "dekan", "rektör", "kim", "görüşme", "müsait", 
+            "hangi", "veriyor", "bekir", "murat", "cemal", "vasif", "güzin", "mustafa", 
+            "tuğrul", "selen", "sedat", "hüseyin", "beste", "şeyma", "selçuk", "bahar", 
+            "gül", "zafer", "ömer", "burak", "metehan", "samet", "seda", "muhammed", 
+            "orhan", "batuhan", "büşra", "dizdaroğlu", "ekinci", "köse", "nabiyev", 
+            "ulutaş", "çavdar", "ayas", "görmüş", "pehlivan", "üstübioğlu", "aykut", 
+            "aymaz", "cevher", "hatipoğlu", "yılmaz", "tahaoğlu", "yavuz", "çakır", 
+            "aydın", "bulut", "dinçer", "efendioğlu", "kılıç", "sivaz", "çimşit", 
+            "özkellekci"
         ],
         "contact_info": [
-            "iletişim", "telefon", "mail", "posta", "e-posta", "fax", "kep", "numara", "santral", "dahili",
-            "adres", "nerede", "ulaşım", "konum", "ofis", "oda", "yol", "harita", "otobüs", "dolmuş", "durak"
+            "iletişim", "telefon", "mail", "posta", "e-posta", "fax", "kep", "numara", 
+            "santral", "dahili", "adres", "nerede", "ulaşım", "konum", "ofis", "oda", 
+            "yol", "harita", "otobüs", "dolmuş", "durak"
         ],
         "general_info": [
-            "üniversite", "kampüs", "yurt", "burs", "yemekhane", "kütüphane", "sağlık", "mediko", 
-            "spor", "havuz", "ring", "etkinlik", "kulüp", "topluluk", "şenlik",
-            "öğrenci", "işleri", "tarihçe", "obs", "bilgi", "sistemi", "takvim", "akademik", "duyuru", "şifre", "belge"
+            "üniversite", "kampüs", "yurt", "burs", "yemekhane", "kütüphane", "sağlık", 
+            "mediko", "spor", "havuz", "ring", "etkinlik", "kulüp", "topluluk", "şenlik",
+            "öğrenci", "işleri", "tarihçe", "obs", "bilgi", "sistemi", "takvim", 
+            "akademik", "duyuru", "şifre", "belge"
         ]
     }
 
@@ -159,7 +162,7 @@ if __name__ == "__main__":
                 
                 print(f"Soru {i}: {soru}")
                 if intent == "unknown":
-                    print(f"  └─ Sonuç: unknown (Emin Değil)")
+                    print("  └─ Sonuç: unknown (Emin Değil)")
                 else:
                     print(f"  └─ Sonuç: {intent} (Güven: %{int(confidence*100)})")
                 print("-" * 40)
@@ -179,7 +182,7 @@ if __name__ == "__main__":
                 intent, confidence = IntentClassifier.predict(kullanici_sorusu)
                 
                 if intent == "unknown":
-                    print(f"Tespit Edilen Niyet: unknown (Anlaşılamadı)")
+                    print("Tespit Edilen Niyet: unknown (Anlaşılamadı)")
                 else:
                     print(f"Tespit Edilen Niyet: {intent}")
                     print(f"Güven Skoru: %{int(confidence * 100)} ({confidence})")
