@@ -1,0 +1,10 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\app",
+    "\\backend\\app\\services"
+  ],
+  "SelectedNode": "\\backend\\app\\services\\intent_service.py",
+  "PreviewInSolutionExplorer": false
+}
