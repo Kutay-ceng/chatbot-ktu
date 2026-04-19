@@ -3,10 +3,9 @@
     "",
     "\\backend",
     "\\backend\\app",
-    "\\backend\\app\\services",
-    "\\intent\\intentclass",
-    "\\intent\\intentclass\\intentclass"
+    "\\backend\\tests",
+    "\\backend\\tests\\integration"
   ],
-  "SelectedNode": "\\backend\\app\\services\\faq_service.py",
+  "SelectedNode": "\\backend\\tests\\integration\\test_chat.py",
   "PreviewInSolutionExplorer": false
 }
