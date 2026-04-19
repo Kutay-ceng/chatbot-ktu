@@ -10,6 +10,7 @@ CATEGORY_TO_INTENT = {
     "Contact information": "contact_info",
 }
 
+
 @dataclass(frozen=True)
 class FaqMatch:
     """SSS eşleşme sonucu."""

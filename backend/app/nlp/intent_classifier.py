@@ -1,5 +1,6 @@
 ﻿import re
 
+
 class TurkishTextPreprocessor:
     """Kural tabanlı Türkçe ön işleme adımları."""
 
@@ -30,6 +31,7 @@ class TurkishTextPreprocessor:
         text = cls.lowercase_tr(text)
         text = cls.remove_punctuation(text)
         return cls.tokenize(text)
+
 
 class IntentClassifier:
     """Niyet sınıflandırıcısı."""

@@ -7,6 +7,7 @@ FALLBACK_ANSWER = (
     "hakkında daha spesifik sorabilir misin?"
 )
 
+
 class ChatService:
     """Ana sohbet servisi."""
 

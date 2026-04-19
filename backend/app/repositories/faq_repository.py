@@ -2,6 +2,7 @@
 from functools import lru_cache
 from pathlib import Path
 
+
 @lru_cache(maxsize=1)
 def _faq_path() -> Path:
     """FAQ veri dosyasının yolunu bulur."""
@@ -12,6 +13,7 @@ def _faq_path() -> Path:
             return candidate
     raise FileNotFoundError("FAQ veri dosyası bulunamadı.")
 
+
 @lru_cache(maxsize=1)
 def _load_faq_entries() -> list[dict]:
     """JSON dosyasını yükler."""
@@ -20,6 +22,7 @@ def _load_faq_entries() -> list[dict]:
     if not isinstance(raw_data, list):
         raise ValueError("Geçersiz veri formatı.")
     return raw_data
+
 
 class FaqRepository:
     """Veri erişim katmanı."""

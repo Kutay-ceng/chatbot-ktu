@@ -1,5 +1,6 @@
 ﻿from backend.app.nlp import IntentClassifier
 
+
 class IntentService:
     """Niyet işleme servisi."""
 
