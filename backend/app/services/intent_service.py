@@ -1,33 +1,41 @@
-﻿from dataclasses import dataclass
+﻿# -*- coding: utf-8 -*-
+from dataclasses import dataclass
+
 from backend.app.nlp import IntentClassifier
 
 
 @dataclass(frozen=True)
 class IntentResult:
+    """Niyet sınıflandırma sonucunu tutan veri yapısı."""
     intent: str
     confidence: float | None = None
-    answer: str | None = None  # Testlerin beklediği cevap metni
-    source: str | None = None  # Testlerin beklediği kaynak (rules/fallback)
+    answer: str | None = None
+    source: str | None = None
 
 
 class IntentService:
+    """NLP niyetlerini işleyen servis katmanı."""
+
     def predict(self, text: str) -> IntentResult:
+        """
+        Metni analiz eder ve yapılandırılmış niyet sonucu döner.
+        """
         # 1. NLP modülünden ham verileri alıyoruz
         intent, confidence = IntentClassifier.predict(text)
-        
-        # 2. Testlerin geçmesi için mantıksal ayırımı yapıyoruz
+
+        # 2. Bilinmeyen niyet durumu (Testlerin beklediği fallback senaryosu)
         if intent == "unknown":
             return IntentResult(
                 intent="unknown",
                 confidence=confidence,
                 answer="Üzgünüm, sorunuzu tam olarak anlayamadım.",
-                source="fallback"  # Test bu değeri 'fallback' olarak bekliyor
+                source="fallback"
             )
-        
-        # 3. Eğer niyet bulunduysa (courses, academic_staff vb.)
+
+        # 3. Başarılı eşleşme durumu (Testlerin beklediği rules senaryosu)
         return IntentResult(
             intent=intent,
             confidence=confidence,
             answer=f"{intent} kategorisinde bir eşleşme bulundu.",
-            source="rules"  # Test bu değeri 'rules' olarak bekliyor
+            source="rules"
         )
