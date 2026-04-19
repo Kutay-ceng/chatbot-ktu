@@ -3,8 +3,13 @@
     "",
     "\\backend",
     "\\backend\\app",
+    "\\backend\\app\\api",
+    "\\backend\\app\\api\\routes",
+    "\\backend\\app\\nlp",
+    "\\backend\\app\\repositories",
+    "\\backend\\app\\schemas",
     "\\backend\\app\\services"
   ],
-  "SelectedNode": "\\backend\\app\\services\\intent_service.py",
+  "SelectedNode": "\\backend\\app\\api\\routes\\chat.py",
   "PreviewInSolutionExplorer": false
 }

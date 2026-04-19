@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\intent_service.py||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\app\\services\\intent_service.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\api\\routes\\chat.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\app\\api\\routes\\chat.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\schemas\\chat.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\app\\schemas\\chat.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\chat_service.py||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -13,6 +17,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\faq_service.py||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\app\\services\\faq_service.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\intent_service.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\app\\services\\intent_service.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\repositories\\faq_repository.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\app\\repositories\\faq_repository.py||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\nlp\\intent_classifier.py||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:backend\\app\\nlp\\intent_classifier.py||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,45 +38,97 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "chat_service.py",
-              "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\chat_service.py",
-              "RelativeDocumentMoniker": "backend\\app\\services\\chat_service.py",
-              "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\chat_service.py",
-              "RelativeToolTip": "backend\\app\\services\\chat_service.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "chat.py",
+              "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\api\\routes\\chat.py",
+              "RelativeDocumentMoniker": "backend\\app\\api\\routes\\chat.py",
+              "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\api\\routes\\chat.py",
+              "RelativeToolTip": "backend\\app\\api\\routes\\chat.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-19T14:41:25.273Z",
+              "WhenOpened": "2026-04-19T15:23:34.294Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "chat.py",
+              "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\schemas\\chat.py",
+              "RelativeDocumentMoniker": "backend\\app\\schemas\\chat.py",
+              "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\schemas\\chat.py",
+              "RelativeToolTip": "backend\\app\\schemas\\chat.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-19T15:23:22.345Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "chat_service.py",
+              "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\chat_service.py",
+              "RelativeDocumentMoniker": "backend\\app\\services\\chat_service.py",
+              "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\chat_service.py",
+              "RelativeToolTip": "backend\\app\\services\\chat_service.py",
+              "ViewState": "AgIAABIAAAAAAAAAAAAuwDMAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-19T15:23:12.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "faq_service.py",
               "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\faq_service.py",
               "RelativeDocumentMoniker": "backend\\app\\services\\faq_service.py",
               "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\faq_service.py",
               "RelativeToolTip": "backend\\app\\services\\faq_service.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADEAAAAAAAAAAAAuwEAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-19T14:41:24.55Z",
+              "WhenOpened": "2026-04-19T15:22:54.488Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
+              "Title": "faq_repository.py",
+              "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\repositories\\faq_repository.py",
+              "RelativeDocumentMoniker": "backend\\app\\repositories\\faq_repository.py",
+              "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\repositories\\faq_repository.py",
+              "RelativeToolTip": "backend\\app\\repositories\\faq_repository.py",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-19T15:22:16.812Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "intent_classifier.py",
+              "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\nlp\\intent_classifier.py",
+              "RelativeDocumentMoniker": "backend\\app\\nlp\\intent_classifier.py",
+              "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\nlp\\intent_classifier.py",
+              "RelativeToolTip": "backend\\app\\nlp\\intent_classifier.py",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAFMAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-19T15:21:48.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "intent_service.py",
               "DocumentMoniker": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\intent_service.py",
               "RelativeDocumentMoniker": "backend\\app\\services\\intent_service.py",
               "ToolTip": "C:\\Users\\okara\\Documents\\GitHub\\chatbot-ktu\\backend\\app\\services\\intent_service.py",
               "RelativeToolTip": "backend\\app\\services\\intent_service.py",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-19T14:38:11.378Z",
+              "WhenOpened": "2026-04-19T15:21:38.175Z",
               "EditorCaption": ""
             }
           ]

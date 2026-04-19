@@ -7,8 +7,9 @@ FALLBACK_ANSWER = (
     "hakkında daha spesifik sorabilir misin?"
 )
 
-
 class ChatService:
+    """Ana sohbet servisi."""
+
     def __init__(
         self,
         intent_service: IntentService | None = None,
@@ -18,31 +19,34 @@ class ChatService:
         self._faq_service = faq_service or FaqService()
 
     def handle_message(self, message: str, session_id: str | None = None) -> ChatResponse:
-        del session_id  # Reserved for future conversation-state support.
-
+        """Mesajı işler ve yapılandırılmış cevap döner."""
+        del session_id
         intent_result = self._intent_service.predict(message)
-        
-        # If intent is unknown, return fallback immediately without querying FAQ
-        if intent_result.intent == "unknown":
+        current_intent = intent_result["intent"]
+        current_conf = intent_result["confidence"]
+
+        if current_intent == "unknown":
             return ChatResponse(
                 answer=FALLBACK_ANSWER,
                 intent="unknown",
-                confidence=intent_result.confidence,
+                confidence=current_conf,
+                source="fallback"
             )
         
-        match = self._faq_service.find_best_match(message=message, intent=intent_result.intent)
+        match = self._faq_service.find_best_match(message=message, intent=current_intent)
 
         if match:
             return ChatResponse(
                 answer=match.answer,
                 intent=match.intent,
                 confidence=match.confidence,
-                source=match.source,
+                source=match.source or "rules",
                 matched_question=match.question,
             )
 
         return ChatResponse(
             answer=FALLBACK_ANSWER,
-            intent=intent_result.intent,
-            confidence=intent_result.confidence,
+            intent=current_intent,
+            confidence=current_conf,
+            source="fallback"
         )
