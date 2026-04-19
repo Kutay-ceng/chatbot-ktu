@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 
 from backend.app.nlp import IntentClassifier
 
@@ -11,5 +11,5 @@ class IntentResult:
 
 class IntentService:
     def predict(self, text: str) -> IntentResult:
-        intent = IntentClassifier.predict(text)
-        return IntentResult(intent=intent)
+        intent, confidence = IntentClassifier.predict(text)
+        return IntentResult(intent=intent, confidence=confidence)
