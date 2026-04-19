@@ -1,22 +1,21 @@
 import json
+import os
 import sys
-from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-if str(ROOT_DIR) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
 
 try:
-    from backend.app.nlp import IntentClassifier
+    from src.intentclass import IntentClassifier
 except ImportError:
-    print("❌ HATA: backend.app.nlp.IntentClassifier bulunamadı!")
+    print("❌ HATA: 'src/intentclass.py' dosyası bulunamadı!")
     sys.exit(1)
 
-
 def run_evaluation():
-    data_path = Path(__file__).resolve().parents[1] / "datasets" / "test_data.json"
+    data_path = os.path.join(current_dir, 'test_data.json')
     try:
-        with data_path.open("r", encoding="utf-8") as f:
+        with open(data_path, 'r', encoding='utf-8') as f:
             test_cases = json.load(f)
     except FileNotFoundError:
         print(f"❌ HATA: {data_path} bulunamadı!")
@@ -31,9 +30,9 @@ def run_evaluation():
     print("-" * 85)
 
     for case in test_cases:
-        question = case.get("text") or case.get("question")
-        expected = case.get("intent") or case.get("category")
-
+        question = case.get('text') or case.get('question')
+        expected = case.get('intent') or case.get('category')
+        
         result = IntentClassifier.predict(question)
 
         if result == expected:
@@ -42,7 +41,7 @@ def run_evaluation():
         else:
             status = "❌"
 
-        short_q = (question[:37] + "..") if len(question) > 37 else question
+        short_q = (question[:37] + '..') if len(question) > 37 else question
         print(f"{short_q:<40} | {expected:<15} | {result:<15} | {status}")
 
     accuracy = (success_count / total) * 100 if total > 0 else 0
