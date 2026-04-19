@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 
 from backend.app.nlp import TurkishTextPreprocessor
 from backend.app.repositories import FaqRepository
@@ -36,6 +36,10 @@ class FaqService:
         self._faq_repository = faq_repository or FaqRepository()
 
     def find_best_match(self, message: str, intent: str) -> FaqMatch | None:
+        # Safety check: don't process unknown intents
+        if intent == "unknown":
+            return None
+            
         query_tokens = set(_tokenize_text(message))
         if not query_tokens:
             return None

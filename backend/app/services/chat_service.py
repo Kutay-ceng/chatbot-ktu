@@ -1,4 +1,4 @@
-from backend.app.schemas.chat import ChatResponse
+﻿from backend.app.schemas.chat import ChatResponse
 from backend.app.services.faq_service import FaqService
 from backend.app.services.intent_service import IntentService
 
@@ -21,6 +21,15 @@ class ChatService:
         del session_id  # Reserved for future conversation-state support.
 
         intent_result = self._intent_service.predict(message)
+        
+        # If intent is unknown, return fallback immediately without querying FAQ
+        if intent_result.intent == "unknown":
+            return ChatResponse(
+                answer=FALLBACK_ANSWER,
+                intent="unknown",
+                confidence=intent_result.confidence,
+            )
+        
         match = self._faq_service.find_best_match(message=message, intent=intent_result.intent)
 
         if match:
