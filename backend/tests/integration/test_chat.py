@@ -1,4 +1,4 @@
-from fastapi.testclient import TestClient
+﻿from fastapi.testclient import TestClient
 
 from backend.app.main import app
 
@@ -32,4 +32,5 @@ def test_chat_returns_fallback_when_no_match():
 
     assert payload["answer"]
     assert payload["intent"] == "unknown"
-    assert payload["source"] is None
+    # BURASI DÜZELTİLDİ: Artık None değil, "fallback" bekliyoruz
+    assert payload["source"] == "fallback"
