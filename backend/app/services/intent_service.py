@@ -1,15 +1,24 @@
-from dataclasses import dataclass
-
-from backend.app.nlp import IntentClassifier
-
-
-@dataclass(frozen=True)
-class IntentResult:
-    intent: str
-    confidence: float | None = None
+﻿from backend.app.nlp import IntentClassifier
 
 
 class IntentService:
-    def predict(self, text: str) -> IntentResult:
-        intent = IntentClassifier.predict(text)
-        return IntentResult(intent=intent)
+    """Niyet işleme servisi."""
+
+    def predict(self, text: str) -> dict:
+        """Metni analiz eder ve niyet sonucunu sözlük yapısında döner."""
+        intent, confidence = IntentClassifier.predict(text)
+
+        if intent == "unknown":
+            return {
+                "intent": "unknown",
+                "confidence": confidence,
+                "answer": "Sorunuzu anlayamadım.",
+                "source": "fallback"
+            }
+
+        return {
+            "intent": intent,
+            "confidence": confidence,
+            "answer": f"{intent} kategorisinde bir eşleşme bulundu.",
+            "source": "rules"
+        }

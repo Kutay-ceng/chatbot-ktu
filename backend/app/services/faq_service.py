@@ -18,6 +18,8 @@ INTENT_MATCH_BONUS = 0.05
 
 @dataclass(frozen=True)
 class FaqMatch:
+    """SSS eşleşme sonucu."""
+
     answer: str
     intent: str
     confidence: float
@@ -29,7 +31,17 @@ def _normalize_text(text: str) -> str:
     return " ".join(TurkishTextPreprocessor.process(text or ""))
 
 
+def _faq_entries(faq_repository: FaqRepository) -> list[dict]:
+    if hasattr(faq_repository, "get_all"):
+        return faq_repository.get_all()
+    if hasattr(faq_repository, "list_entries"):
+        return faq_repository.list_entries()
+    raise AttributeError("FaqRepository must implement get_all()")
+
+
 class FaqService:
+    """SSS arama ve eşleştirme servisi."""
+
     def __init__(
         self,
         faq_repository: FaqRepository | None = None,
@@ -46,7 +58,7 @@ class FaqService:
         valid_entries: list[dict] = []
         normalized_questions: list[str] = []
 
-        for entry in self._faq_repository.list_entries():
+        for entry in _faq_entries(self._faq_repository):
             question = str(entry.get("question", "")).strip()
             answer = str(entry.get("answer", "")).strip()
             if not question or not answer:
@@ -94,7 +106,7 @@ class FaqService:
             return None
 
         best_entry = valid_entries[best_index]
-        source = best_entry.get("source")
+        source = str(best_entry.get("source", "")).strip() or None
         matched_question = str(best_entry.get("question", "")).strip() or None
         matched_intent = CATEGORY_TO_INTENT.get(
             str(best_entry.get("category", "")).strip(),
@@ -105,6 +117,6 @@ class FaqService:
             answer=str(best_entry.get("answer", "")).strip(),
             intent=matched_intent,
             confidence=round(min(best_score, 1.0), 3),
-            source=str(source).strip() if source else None,
+            source=source,
             matched_question=matched_question,
         )

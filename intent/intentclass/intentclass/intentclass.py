@@ -1,4 +1,4 @@
-from backend.app.nlp import IntentClassifier
+﻿from backend.app.nlp import IntentClassifier
 
 
 def main() -> None:
@@ -17,8 +17,9 @@ def main() -> None:
             print("Lutfen bir soru girin.")
             continue
 
-        result = IntentClassifier.predict(question)
-        print(f"Tespit Edilen Niyet: {result}")
+        # Niyet ve skoru ayri ayri alip ekrana basiyoruz
+        result, score = IntentClassifier.predict(question)
+        print(f"Tespit Edilen Niyet: {result} (Guven Skoru: {score})")
 
 
 if __name__ == "__main__":

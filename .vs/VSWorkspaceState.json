@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\backend",
+    "\\backend\\app",
+    "\\backend\\tests",
+    "\\backend\\tests\\integration"
+  ],
+  "SelectedNode": "\\backend\\tests\\integration\\test_chat.py",
+  "PreviewInSolutionExplorer": false
+}

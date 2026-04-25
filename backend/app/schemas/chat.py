@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+﻿from pydantic import BaseModel
 
 
 class ChatRequest(BaseModel):
@@ -10,5 +10,5 @@ class ChatResponse(BaseModel):
     answer: str
     intent: str
     confidence: float | None = None
-    source: str | None = None
+    source: str
     matched_question: str | None = None
