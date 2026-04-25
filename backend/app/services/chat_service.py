@@ -29,7 +29,7 @@ class ChatService:
                 intent=match.intent,
                 confidence=match.confidence,
                 source=match.source,
-                matched_question=match.question,
+                matched_question=match.matched_question,
             )
 
         return ChatResponse(
