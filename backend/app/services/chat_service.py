@@ -1,4 +1,4 @@
-﻿from backend.app.schemas.chat import ChatResponse
+from backend.app.schemas.chat import ChatResponse
 from backend.app.services.faq_service import FaqService
 from backend.app.services.intent_service import IntentService
 
@@ -26,14 +26,6 @@ class ChatService:
         current_intent = intent_result["intent"]
         current_conf = intent_result["confidence"]
 
-        if current_intent == "unknown":
-            return ChatResponse(
-                answer=FALLBACK_ANSWER,
-                intent="unknown",
-                confidence=current_conf,
-                source="fallback"
-            )
-        
         match = self._faq_service.find_best_match(message=message, intent=current_intent)
 
         if match:
@@ -42,12 +34,12 @@ class ChatService:
                 intent=match.intent,
                 confidence=match.confidence,
                 source=match.source or "rules",
-                matched_question=match.question,
+                matched_question=match.matched_question,
             )
 
         return ChatResponse(
             answer=FALLBACK_ANSWER,
             intent=current_intent,
             confidence=current_conf,
-            source="fallback"
+            source="fallback",
         )
