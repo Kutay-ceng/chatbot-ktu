@@ -33,7 +33,8 @@ class ChatService:
                 answer=match.answer,
                 intent=match.intent,
                 confidence=match.confidence,
-                source=match.source or "rules",
+                mode="faq",
+                sources=[{"url": match.source or "rules"}],
                 matched_question=match.matched_question,
             )
 
@@ -41,5 +42,6 @@ class ChatService:
             answer=FALLBACK_ANSWER,
             intent=current_intent,
             confidence=current_conf,
-            source="fallback",
+            mode="fallback",
+            sources=[{"url": "fallback"}],
         )
