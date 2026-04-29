@@ -5,11 +5,13 @@ class ChatRequest(BaseModel):
     message: str
     session_id: str | None = None
 
+
 class ChatSource(BaseModel):
     title: str | None = None
     url: str | None = None
     type: str = "web"
     score: float | None = None
+
 
 class ChatResponse(BaseModel):
     answer: str
