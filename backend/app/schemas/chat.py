@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ChatRequest(BaseModel):
@@ -19,5 +19,6 @@ class ChatResponse(BaseModel):
     confidence: float | None = None
     mode: str
     matched_question: str | None = None
-    sources: list[ChatSource] = []
+    sources: list[ChatSource] = Field(default_factory=list)
     session_id: str | None = None
+    
