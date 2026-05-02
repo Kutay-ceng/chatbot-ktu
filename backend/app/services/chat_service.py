@@ -50,5 +50,8 @@ class ChatService:
             intent=current_intent,
             confidence=current_conf,
             mode="fallback",
-            sources=[{"url": "fallback"}],
+            matched_question=None,
+            sources=[],
+            session_id=None,
         )
+        
