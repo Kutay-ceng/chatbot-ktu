@@ -1,3 +1,4 @@
+
 from backend.app.schemas.chat import ChatResponse
 from backend.app.services.faq_service import FaqService
 from backend.app.services.intent_service import IntentService
@@ -34,10 +35,16 @@ class ChatService:
                 intent=match.intent,
                 confidence=match.confidence,
                 mode="faq",
-                sources=[{"url": match.source or "rules"}],
                 matched_question=match.matched_question,
-            )
-
+                sources=[
+                    {
+                        "title": match.matched_question,
+                        "url": match.source or "",
+                        "type": "faq",
+                        "score": match.confidence,
+                    }
+                ],
+    )
         return ChatResponse(
             answer=FALLBACK_ANSWER,
             intent=current_intent,
