@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="16" time="0.784" timestamp="2026-05-04T00:58:59.046780+03:00" hostname="DESKTOP-UK8GRDR"><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_raises_error_for_empty_answer" file="backend\tests\unit\test_faq_loader.py" line="104" time="0.023"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_raises_error_for_empty_question" file="backend\tests\unit\test_faq_loader.py" line="87" time="0.016"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_raises_error_for_invalid_json" file="backend\tests\unit\test_faq_loader.py" line="36" time="0.013"><system-out>--------------------------------- Captured Log ---------------------------------
+ERROR    backend.app.services.faq_loader:faq_loader.py:31 Invalid FAQ JSON in 'C:\Users\okara\AppData\Local\Temp\pytest-of-okara\pytest-0\test_load_faq_raises_error_for2\faq.json': line 1, column 3.
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_raises_error_for_missing_required_field" file="backend\tests\unit\test_faq_loader.py" line="56" time="0.006"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_raises_error_for_wrong_field_type" file="backend\tests\unit\test_faq_loader.py" line="71" time="0.012"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_raises_error_when_data_is_not_list" file="backend\tests\unit\test_faq_loader.py" line="42" time="0.007"><system-out>--------------------------------- Captured Log ---------------------------------
+ERROR    backend.app.services.faq_loader:faq_loader.py:40 FAQ data must be a list of records.
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_raises_error_when_file_missing" file="backend\tests\unit\test_faq_loader.py" line="31" time="0.001"><system-out>--------------------------------- Captured Log ---------------------------------
+ERROR    backend.app.services.faq_loader:faq_loader.py:20 FAQ file not found: C:\Users\okara\AppData\Local\Temp\pytest-of-okara\pytest-0\test_load_faq_raises_error_whe1\missing.json
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_loader" name="test_load_faq_returns_valid_records" file="backend\tests\unit\test_faq_loader.py" line="10" time="0.009"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_honors_custom_threshold" file="backend\tests\unit\test_faq_service.py" line="93" time="0.010"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_returns_expected_faq_entry[\u0130ngilizce haz\u0131rl\u0131k var m\u0131-general_info-\u0130ngilizce haz\u0131rl\u0131k e\u011fitimi var m\u0131?]" file="backend\tests\unit\test_faq_service.py" line="53" time="0.003"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_returns_expected_faq_entry[Akademik takvim nereden takip edilir?-course_info-Akademik takvimi nereden takip edebilirim?]" file="backend\tests\unit\test_faq_service.py" line="53" time="0.002"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_returns_expected_faq_entry[B\xd6L\xdcM BA\u015eKANI K\u0130M?!!-academic_staff-B\xf6l\xfcm ba\u015fkan\u0131 kim?]" file="backend\tests\unit\test_faq_service.py" line="53" time="0.002"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_returns_expected_faq_entry[Staj ka\xe7 g\xfcn?-course_info-Staj zorunlulu\u011fu ka\xe7 g\xfcn?]" file="backend\tests\unit\test_faq_service.py" line="53" time="0.002"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_returns_expected_faq_entry[Telefon numaras\u0131 nedir?-contact_info-B\xf6l\xfcm\xfcn telefon numaras\u0131 nedir?]" file="backend\tests\unit\test_faq_service.py" line="53" time="0.002"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_returns_none_for_empty_message" file="backend\tests\unit\test_faq_service.py" line="81" time="0.000"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase><testcase classname="backend.tests.unit.test_faq_service" name="test_find_best_match_returns_none_for_low_confidence_query" file="backend\tests\unit\test_faq_service.py" line="85" time="0.001"><system-out>--------------------------------- Captured Log ---------------------------------
+
+--------------------------------- Captured Out ---------------------------------
+
+</system-out><system-err>--------------------------------- Captured Err ---------------------------------
+
+</system-err></testcase></testsuite></testsuites>
