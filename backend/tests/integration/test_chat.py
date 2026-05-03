@@ -6,7 +6,10 @@ client = TestClient(app)
 
 
 def test_chat_returns_structured_response_with_source_when_matched():
-    response = client.post("/chat", json={"message": "Bölüm başkanı kim?"})
+    response = client.post(
+        "/chat",
+        json={"message": "Bölüm başkanı kim?", "session_id": "session-faq-1"},
+    )
 
     assert response.status_code == 200
     payload = response.json()
@@ -46,7 +49,10 @@ def test_chat_returns_400_for_empty_message():
 
 
 def test_chat_returns_fallback_when_no_match():
-    response = client.post("/chat", json={"message": "Mars üssüne nasıl gidebilirim?"})
+    response = client.post(
+        "/chat",
+        json={"message": "Mars üssüne nasıl gidebilirim?", "session_id": "session-fallback-1"},
+    )
 
     assert response.status_code == 200
     payload = response.json()

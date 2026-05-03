@@ -14,7 +14,10 @@ def chat(request: ChatRequest) -> ChatResponse:
             detail="message must not be empty",
         )
     try:
-        return chat_service.handle_message(message=request.message)
+        return chat_service.handle_message(
+            message=request.message,
+            session_id=request.session_id,
+        )
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

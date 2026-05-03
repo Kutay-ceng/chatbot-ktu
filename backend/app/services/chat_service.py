@@ -1,4 +1,3 @@
-
 from backend.app.schemas.chat import ChatResponse
 from backend.app.services.faq_service import FaqService
 from backend.app.services.intent_service import IntentService
@@ -22,7 +21,6 @@ class ChatService:
 
     def handle_message(self, message: str, session_id: str | None = None) -> ChatResponse:
         """Mesajı işler ve yapılandırılmış cevap döner."""
-        del session_id
         intent_result = self._intent_service.predict(message)
         current_intent = intent_result["intent"]
         current_conf = intent_result["confidence"]
@@ -44,7 +42,8 @@ class ChatService:
                         "score": match.confidence,
                     }
                 ],
-    )
+                session_id=session_id,
+            )
         return ChatResponse(
             answer=FALLBACK_ANSWER,
             intent=current_intent,
@@ -52,6 +51,5 @@ class ChatService:
             mode="fallback",
             matched_question=None,
             sources=[],
-            session_id=None,
+            session_id=session_id,
         )
-        
