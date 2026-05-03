@@ -34,4 +34,6 @@ def test_chat_returns_fallback_when_no_match():
     assert payload["intent"] == "unknown"
     # BURASI DÜZELTİLDİ: Yeni modele göre güncellendi
     assert payload["mode"] == "fallback"
-    assert payload["sources"][0]["url"] == "fallback"
+    assert payload["sources"] == []
+    assert payload["matched_question"] is None
+    assert "session_id" in payload
