@@ -209,3 +209,9 @@ __marimo__/
 
 # Visual Studio
 .vs/
+
+# Created by pytest automatically.
+.pytest_cache/
+
+# Visual Studio Test Results
+TestResults/
