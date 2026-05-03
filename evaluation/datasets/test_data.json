@@ -1,62 +1,104 @@
 [
   {
     "question": "KTÜ Bilgisayar Mühendisliği Bölümü hangi programlarda eğitim veriyor?",
-    "intent": "general_info"
+    "intent": "general_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "KTÜ Bilgisayar Mühendisliği Bölümü hangi programlarda eğitim veriyor?"
   },
   {
     "question": "Lisans eğitimini bitiren öğrencilere hangi unvan verilir?",
-    "intent": "general_info"
+    "intent": "general_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Lisans eğitimini bitiren öğrencilere hangi unvan verilir?"
   },
   {
     "question": "İngilizce hazırlık eğitimi var mı?",
-    "intent": "general_info"
+    "intent": "general_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "İngilizce hazırlık eğitimi var mı?"
   },
   {
     "question": "Derslerin içerikleri ve AKTS bilgilerini nereden görebilirim?",
-    "intent": "course_info"
+    "intent": "course_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Derslerin içerikleri/AKTS bilgilerini nereden görebilirim?"
   },
   {
     "question": "Haftalık ders ve sınav programlarına nasıl ulaşırım?",
-    "intent": "course_info"
+    "intent": "course_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Lisans ders ve sınav programlarını nereden görebilirim?"
   },
   {
     "question": "Staj zorunluluğu toplam kaç gün?",
-    "intent": "course_info"
+    "intent": "course_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Staj zorunluluğu kaç gün?"
   },
   {
     "question": "Bölüm başkanı Mustafa Ulutaş'a nasıl ulaşırım?",
-    "intent": "academic_staff"
+    "intent": "academic_staff",
+    "expected_mode": "faq",
+    "expected_matched_question": "Bölüm başkanına nasıl ulaşabilirim (e-posta/telefon)?"
   },
   {
     "question": "Danışman hocadan randevu nasıl alınır?",
-    "intent": "academic_staff"
+    "intent": "academic_staff",
+    "expected_mode": "faq",
+    "expected_matched_question": "Öğrenci danışmanlığı randevusu nasıl alınır?"
   },
   {
     "question": "Bölümde hangi anabilim dalları var?",
-    "intent": "academic_staff"
+    "intent": "academic_staff",
+    "expected_mode": "faq",
+    "expected_matched_question": "Bölümde hangi anabilim dalları var?"
   },
   {
     "question": "Bölümün telefon numarası ve adresi nedir?",
-    "intent": "contact_info"
+    "intent": "contact_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Bölümün telefon numarası nedir?"
   },
   {
     "question": "Bölüm sekreterliğine mail nasıl atabilirim?",
-    "intent": "contact_info"
+    "intent": "contact_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Bölümün resmi e-posta adresi nedir?"
   },
   {
     "question": "Laboratuvar teknik sorumluları kimler?",
-    "intent": "contact_info"
+    "intent": "contact_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "İdari personel ve laboratuvar teknik personeli listesi nerede?"
   },
   {
     "question": "Trabzon'da bugün hava nasıl?",
-    "intent": "unknown"
+    "intent": "unknown",
+    "expected_mode": "fallback",
+    "expected_matched_question": null
   },
   {
     "question": "Yemekhanede ne yemek var?",
-    "intent": "general_info"
+    "intent": "general_info",
+    "expected_mode": "fallback",
+    "expected_matched_question": null
   },
   {
     "question": "Akademik takvime nereden bakabilirim?",
-    "intent": "course_info"
+    "intent": "course_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Akademik takvimi nereden takip edebilirim?"
+  },
+  {
+    "question": "Akademik takvim ne zaman?",
+    "intent": "course_info",
+    "expected_mode": "faq",
+    "expected_matched_question": "Akademik takvimi nereden takip edebilirim?"
+  },
+  {
+    "question": "Burs başvurusu nasıl yapılır?",
+    "intent": "general_info",
+    "expected_mode": "fallback",
+    "expected_matched_question": null
   }
 ]
