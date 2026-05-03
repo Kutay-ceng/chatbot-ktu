@@ -1,4 +1,6 @@
-﻿from fastapi.testclient import TestClient
+from uuid import UUID
+
+from fastapi.testclient import TestClient
 
 from backend.app.main import app
 
@@ -53,3 +55,13 @@ def test_chat_returns_fallback_when_no_match():
     assert payload["matched_question"] is None
     assert payload["session_id"] == "session-fallback-1"
     assert "source" not in payload
+
+
+def test_chat_generates_session_id_when_missing():
+    response = client.post("/chat", json={"message": "Bölüm başkanı kim?"})
+
+    assert response.status_code == 200
+    payload = response.json()
+
+    assert payload["session_id"]
+    UUID(payload["session_id"])
