@@ -244,6 +244,17 @@ Chatbot eğitimi için yeterli soru bulunamayabilir.
 
 # Proje Grubu İş Paylaşımı
 
+## Gereksinim Analizi Raporu
+**Lider:** Onur Karaahmet
+
+Sorumluluklar:
+
+- Fonksiyonel ve fonksiyonel olmayan gereksinimlerin belirlenmesi
+- Sistem kısıtlarının tanımlanması
+- Riskleri azaltmaya yönelik gereksinim çerçevesi oluşturmak
+
+---
+
 ## Mimari Tasarım Raporu
 **Lider:** Kutay Keleş
 
@@ -265,17 +276,6 @@ Sorumluluklar:
 - Performans analizleri
 - Elde edilen sonuçların raporlanması
 - Genel proje değerlendirmesi
-
----
-
-## Gereksinim Analizi Raporu
-**Lider:** Onur Karaahmet
-
-Sorumluluklar:
-
-- Fonksiyonel ve fonksiyonel olmayan gereksinimlerin belirlenmesi
-- Sistem kısıtlarının tanımlanması
-- Riskleri azaltmaya yönelik gereksinim çerçevesi oluşturmak
 
 ---
 
