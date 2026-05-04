@@ -1,0 +1,66 @@
+from dataclasses import dataclass, field
+from uuid import uuid4
+
+from backend.app.schemas.chat import ChatResponse
+
+
+@dataclass(frozen=True)
+class ConversationMessage:
+    """LLM/RAG baglami icin saklanan tek sohbet mesaji."""
+
+    role: str
+    content: str
+    metadata: dict[str, str | float | None] = field(default_factory=dict)
+
+
+class InMemorySessionStore:
+    """Gelistirme ortami icin process ici oturum gecmisi."""
+
+    def __init__(self, max_messages_per_session: int = 20) -> None:
+        self._max_messages_per_session = max_messages_per_session
+        self._sessions: dict[str, list[ConversationMessage]] = {}
+
+    def resolve_session_id(self, session_id: str | None = None) -> str:
+        cleaned_session_id = (session_id or "").strip()
+        if cleaned_session_id:
+            return cleaned_session_id
+        return str(uuid4())
+
+    def append_exchange(
+        self,
+        session_id: str,
+        user_message: str,
+        response: ChatResponse,
+    ) -> None:
+        messages = self._sessions.setdefault(session_id, [])
+        messages.extend(
+            [
+                ConversationMessage(role="user", content=user_message),
+                ConversationMessage(
+                    role="assistant",
+                    content=response.answer,
+                    metadata={
+                        "intent": response.intent,
+                        "confidence": response.confidence,
+                        "mode": response.mode,
+                        "matched_question": response.matched_question,
+                    },
+                ),
+            ]
+        )
+
+        if len(messages) > self._max_messages_per_session:
+            self._sessions[session_id] = messages[-self._max_messages_per_session :]
+
+    def get_history(
+        self,
+        session_id: str,
+        limit: int | None = None,
+    ) -> list[ConversationMessage]:
+        messages = self._sessions.get(session_id, [])
+        if limit is None:
+            return list(messages)
+        return messages[-limit:]
+
+    def clear(self) -> None:
+        self._sessions.clear()
