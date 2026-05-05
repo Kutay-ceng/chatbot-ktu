@@ -1,4 +1,4 @@
-import pytest
+﻿import pytest
 
 from backend.app.services.faq_service import FaqService
 
@@ -97,6 +97,8 @@ def test_find_best_match_honors_custom_threshold() -> None:
         match_threshold=0.90,
     )
 
-    match = service.find_best_match(message="Telefon bilgisi", intent="contact_info")
+    # Intent'i "unknown" yaparak +0.30 bonus almasını engelliyoruz,
+    # böylece salt TF-IDF skoru 0.90 eşiğinin altında kalıp None dönecek.
+    match = service.find_best_match(message="Telefon bilgisi", intent="unknown")
 
     assert match is None

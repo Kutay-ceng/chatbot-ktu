@@ -47,7 +47,7 @@ def run_evaluation(data_path: Path | None = None) -> dict[str, int]:
         data_path = Path(__file__).resolve().parents[1] / "datasets" / "test_data.json"
 
     try:
-        with data_path.open("r", encoding="utf-8") as f:
+        with data_path.open("r", encoding="utf-8-sig") as f:
             test_cases = json.load(f)
     except FileNotFoundError:
         print(f"[HATA] {data_path} bulunamadi!")

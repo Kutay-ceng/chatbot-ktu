@@ -7,7 +7,7 @@ class IntentService:
     def predict(self, text: str) -> dict:
         """Metni analiz eder ve niyet sonucunu sözlük yapısında döner."""
         intent, confidence = IntentClassifier.predict(text)
-
+                 
         if intent == "unknown":
             return {
                 "intent": "unknown",
@@ -15,7 +15,7 @@ class IntentService:
                 "answer": "Sorunuzu anlayamadım.",
                 "source": "fallback"
             }
-
+                     
         return {
             "intent": intent,
             "confidence": confidence,
