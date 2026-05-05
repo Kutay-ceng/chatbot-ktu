@@ -5,10 +5,12 @@
     "\\backend\\app",
     "\\backend\\app\\nlp",
     "\\backend\\app\\services",
+    "\\backend\\tests",
+    "\\backend\\tests\\unit",
     "\\evaluation",
     "\\evaluation\\datasets",
     "\\evaluation\\scripts"
   ],
-  "SelectedNode": "\\evaluation\\scripts\\evaluator.py",
+  "SelectedNode": "\\backend\\tests\\unit\\test_faq_service.py",
   "PreviewInSolutionExplorer": false
 }
