@@ -1,9 +1,14 @@
 [
   {
+<<<<<<< Updated upstream
     "question": "KTÜ Bilgisayar Mühendisliği Bölümü hangi programlarda eğitim veriyor?",
     "intent": "general_info",
     "expected_mode": "faq",
     "expected_matched_question": "KTÜ Bilgisayar Mühendisliği Bölümü hangi programlarda eğitim veriyor?"
+=======
+    "question": "KTÜ Bilgisayar Mühendisliği hangi programlarda eğitim veriyor?",
+    "intent": "general_info"
+>>>>>>> Stashed changes
   },
   {
     "question": "Lisans eğitimini bitiren öğrencilere hangi unvan verilir?",
@@ -85,6 +90,7 @@
   },
   {
     "question": "Akademik takvime nereden bakabilirim?",
+<<<<<<< Updated upstream
     "intent": "course_info",
     "expected_mode": "faq",
     "expected_matched_question": "Akademik takvimi nereden takip edebilirim?"
@@ -100,5 +106,91 @@
     "intent": "general_info",
     "expected_mode": "fallback",
     "expected_matched_question": null
+=======
+    "intent": "course_info"
+  },
+  {
+    "question": "Akademik takvim ne zaman?",
+    "intent": "course_info"
+  },
+  {
+    "question": "Burs başvurusu nasıl yapılır?",
+    "intent": "general_info"
+  },
+  {
+    "question": "Mezun olduğumda bana verecekleri unvan tam olarak ne oluyor?",
+    "intent": "general_info",
+    "_comment": "Zorluk: Doğrudan eşleşen kelime az, devrik cümle. Beklenen: 'Bilgisayar Mühendisi' unvanı."
+  },
+  {
+    "question": "Hazırlık sınıfında İngilizceyi geçemezsem okuldan atılır mıyım?",
+    "intent": "general_info",
+    "_comment": "Zorluk: Korku/endişe belirten farklı kelimeler ('atılır mıyım'). Beklenen: Hazırlık geçememe senaryosu."
+  },
+  {
+    "question": "Mustafa Ulutaş hocanın verdiği derslerin sınav programı nerede?",
+    "intent": "course_info",
+    "_comment": "Zorluk: 'Mustafa Ulutaş' (academic_staff) ile 'sınav programı' (course_info) çakışması."
+  },
+  {
+    "question": "Staj evraklarını bölüm sekreterliğine posta ile mi mail ile mi atıyoruz?",
+    "intent": "contact_info",
+    "_comment": "Zorluk: 'Staj' (course_info) ile 'sekreterlik/mail' (contact_info) çakışması."
+  },
+  {
+    "question": "PC laboratuvarında bilgisayarım bozuldu, kime söyleyebilirim?",
+    "intent": "contact_info",
+    "_comment": "Zorluk: Gündelik dil. Beklenen: 'PC Lab. teknik sorumlusu kimdir?'"
+  },
+  {
+    "question": "Danışman hoca ile internet üzerinden kameralı nasıl görüşürüz?",
+    "intent": "academic_staff",
+    "_comment": "Zorluk: 'Google Meet' veya 'randevu' kelimeleri geçmiyor. Beklenen: Danışman görüşme şekli."
+  },
+  {
+    "question": "akdğmik tkvim nrdn baklrr",
+    "intent": "course_info",
+    "_comment": "Zorluk: Korkunç yazım hataları. char_wb n-gram test ediliyor."
+  },
+  {
+    "question": "blm bşkan yrdmcıları kimlr kanka",
+    "intent": "academic_staff",
+    "_comment": "Zorluk: Sesli harf yutulması ve gündelik hitap. char_wb n-gram testi."
+  },
+  {
+    "question": "Erasmus için Polonya'ya gideceğim, belgeleri nereye vereyim?",
+    "intent": "unknown",
+    "_comment": "Zorluk: FAQ dosyasında Erasmus geçmiyor. Modelin zorlayıp alakasız cevap vermek yerine fallback dönmesi bekleniyor."
+  },
+  {
+    "question": "Hazırlık okumak istemiyorum, direkt 1. sınıftan başlama şansım yok mu?",
+    "intent": "general_info",
+    "_comment": "Zorluk: Olumsuzluk ('istemiyorum', 'yok mu') ve dolaylı anlatım. Beklenen: İngilizce yeterlilik/muafiyet FAQ cevabı."
+  },
+  {
+    "question": "Hastalandığım için vizeye giremedim, sağlık raporumu sekreterliğe mi vereceğim yoksa danışman hocama mı?",
+    "intent": "course_info",
+    "_comment": "Zorluk: 3 niyet birden var! 'Vize' (course), 'sekreterlik' (contact), 'danışman hoca' (academic). Modelin hangi niyete ağırlık verip hangi FAQ'ya gideceği tam bir stress testi."
+  },
+  {
+    "question": "hcm mrb stj blgleri nrdn bulrm",
+    "intent": "course_info",
+    "_comment": "Zorluk: Uzunluk kuralı (min 4 harf) eklediğimiz için 'stj' kelimesini classifier kaçırabilir. Bakalım TF-IDF char n-gram bunu toparlayıp doğru FAQ'ya yönlendirecek mi?"
+  },
+  {
+    "question": "Kantin fiyatları çok pahalı, rektörlüğe nasıl şikayet edebilirim?",
+    "intent": "unknown",
+    "_comment": "Zorluk: 'rektör' kelimesinden dolayı 'general_info'ya kayma ihtimali var ama FAQ'da kantin/şikayet yok. Doğru bir fallback (unknown) dönebilecek mi?"
+  },
+  {
+    "question": "Mühendislik tasarımı projesini almadan önce bir şey yapmam gerekiyor muydu?",
+    "intent": "course_info",
+    "_comment": "Zorluk: Birebir FAQ'daki ('...yapılması önerilen şey nedir?') kalıptan çok farklı, oldukça doğal bir günlük konuşma."
+  },
+  {
+    "question": "Mustafa hoca bana sınavda sıfır verdi, itiraz dilekçesini nereye verebilirim?",
+    "intent": "contact_info",
+    "_comment": "Zorluk: 'Mustafa hoca' ve 'sınav' kelimeleri sistemi kandırmaya çalışacak ama asıl niyet dilekçe vermek (iletişim/sekreterlik)."
+>>>>>>> Stashed changes
   }
 ]

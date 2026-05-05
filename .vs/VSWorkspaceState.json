@@ -3,9 +3,12 @@
     "",
     "\\backend",
     "\\backend\\app",
-    "\\backend\\tests",
-    "\\backend\\tests\\integration"
+    "\\backend\\app\\nlp",
+    "\\backend\\app\\services",
+    "\\evaluation",
+    "\\evaluation\\datasets",
+    "\\evaluation\\scripts"
   ],
-  "SelectedNode": "\\backend\\tests\\integration\\test_chat.py",
+  "SelectedNode": "\\evaluation\\scripts\\evaluator.py",
   "PreviewInSolutionExplorer": false
 }

@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-
+﻿from dataclasses import dataclass
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -12,24 +11,23 @@ CATEGORY_TO_INTENT = {
     "Academic staff": "academic_staff",
     "Contact information": "contact_info",
 }
-DEFAULT_MATCH_THRESHOLD = 0.40
-INTENT_MATCH_BONUS = 0.05
 
+# Char n-gram kullanıldığı için eşik değeri hafif düşürüldü.
+DEFAULT_MATCH_THRESHOLD = 0.30
+INTENT_MATCH_BONUS = 0.30       # Intent eşleşirse güçlü bonus
+INTENT_MISMATCH_PENALTY = 0.20  # Intent uyuşmazsa ceza (Yanlış fallback'i engellemek için)
 
 @dataclass(frozen=True)
 class FaqMatch:
     """SSS eşleşme sonucu."""
-
     answer: str
     intent: str
     confidence: float
     source: str | None = None
     matched_question: str | None = None
 
-
 def _normalize_text(text: str) -> str:
     return " ".join(TurkishTextPreprocessor.process(text or ""))
-
 
 def _faq_entries(faq_repository: FaqRepository) -> list[dict]:
     if hasattr(faq_repository, "get_all"):
@@ -37,7 +35,6 @@ def _faq_entries(faq_repository: FaqRepository) -> list[dict]:
     if hasattr(faq_repository, "list_entries"):
         return faq_repository.list_entries()
     raise AttributeError("FaqRepository must implement get_all()")
-
 
 class FaqService:
     """SSS arama ve eşleştirme servisi."""
@@ -56,7 +53,7 @@ class FaqService:
             return None
 
         valid_entries: list[dict] = []
-        normalized_questions: list[str] = []
+        normalized_docs: list[str] = []
 
         for entry in _faq_entries(self._faq_repository):
             question = str(entry.get("question", "")).strip()
@@ -64,36 +61,46 @@ class FaqService:
             if not question or not answer:
                 continue
 
-            normalized_question = _normalize_text(question)
-            if not normalized_question:
+            # Soru ve cevabı birleştirerek daha zengin TF-IDF metni elde et
+            combined_text = f"{question} {answer}"
+            normalized_doc = _normalize_text(combined_text)
+            if not normalized_doc:
                 continue
 
             valid_entries.append(entry)
-            normalized_questions.append(normalized_question)
+            normalized_docs.append(normalized_doc)
 
         if not valid_entries:
             return None
 
+        # Sonekli kelimeleri yakalayabilmek için karakter n-gram analizi kullan (Örn: "ulaşırım" vs "ulaşabilirim")
         vectorizer = TfidfVectorizer(
-            tokenizer=str.split,
-            token_pattern=None,
-            lowercase=False,
-            ngram_range=(1, 2),
+            analyzer="char_wb",
+            ngram_range=(3, 5),
+            lowercase=True,
         )
-        question_matrix = vectorizer.fit_transform(normalized_questions)
+
+        doc_matrix = vectorizer.fit_transform(normalized_docs)
         query_vector = vectorizer.transform([normalized_query])
-        cosine_scores = cosine_similarity(query_vector, question_matrix).ravel()
+
+        cosine_scores = cosine_similarity(query_vector, doc_matrix).ravel()
 
         best_index = -1
-        best_score = 0.0
+        best_score = -1.0
         best_category_boosted = False
 
         for index, (entry, cosine_score) in enumerate(zip(valid_entries, cosine_scores)):
             adjusted_score = float(cosine_score)
+
             entry_intent = CATEGORY_TO_INTENT.get(str(entry.get("category", "")).strip(), "unknown")
-            category_boosted = intent != "unknown" and entry_intent == intent
-            if category_boosted:
-                adjusted_score += INTENT_MATCH_BONUS
+
+            category_boosted = False
+            if intent != "unknown":
+                if entry_intent == intent:
+                    adjusted_score += INTENT_MATCH_BONUS
+                    category_boosted = True
+                else:
+                    adjusted_score -= INTENT_MISMATCH_PENALTY
 
             if adjusted_score > best_score or (
                 adjusted_score == best_score and category_boosted and not best_category_boosted
@@ -113,10 +120,13 @@ class FaqService:
             intent,
         )
 
+        # Güven skorunu 0-1 aralığında normalize et
+        final_confidence = max(0.0, min(best_score, 1.0))
+
         return FaqMatch(
             answer=str(best_entry.get("answer", "")).strip(),
             intent=matched_intent,
-            confidence=round(min(best_score, 1.0), 3),
+            confidence=round(final_confidence, 3),
             source=source,
             matched_question=matched_question,
         )
