@@ -1,4 +1,5 @@
 ﻿from dataclasses import dataclass
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -73,7 +74,8 @@ class FaqService:
         if not valid_entries:
             return None
 
-        # Sonekli kelimeleri yakalayabilmek için karakter n-gram analizi kullan (Örn: "ulaşırım" vs "ulaşabilirim")
+        # Sonekli kelimeleri yakalayabilmek için karakter n-gram analizi
+        # kullan (Örn: "ulaşırım" vs "ulaşabilirim")
         vectorizer = TfidfVectorizer(
             analyzer="char_wb",
             ngram_range=(3, 5),

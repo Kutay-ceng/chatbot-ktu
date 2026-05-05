@@ -1,5 +1,6 @@
-﻿import re
-import difflib  # <-- Benzerlik ölçümü için yerleşik kütüphaneyi ekliyoruz
+﻿import difflib  # <-- Benzerlik ölçümü için yerleşik kütüphaneyi ekliyoruz
+import re
+
 
 class TurkishTextPreprocessor:
     """Kural tabanlı ön işleme adımları."""
@@ -78,7 +79,8 @@ class IntentClassifier:
                         break
                     
                     # 2. Yazım hatası toleransı (Fuzzy Matching)
-                    # ÇOK ÖNEMLİ: Kısa kelimelerde (ör: "da" vs "dal") saçma eşleşmeleri önlemek için uzunluk şartı
+                    # ÇOK ÖNEMLİ: Kısa kelimelerde (ör: "da" vs "dal") saçma 
+                    # eşleşmeleri önlemek için uzunluk şartı
                     if len(token) >= 4 and len(keyword) >= 4:
                         similarity = difflib.SequenceMatcher(None, token, keyword).ratio()
                         if similarity > 0.75:

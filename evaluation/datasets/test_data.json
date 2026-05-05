@@ -1,14 +1,9 @@
 ﻿[
   {
-<<<<<<< Updated upstream
-    "question": "KTÜ Bilgisayar Mühendisliği Bölümü hangi programlarda eğitim veriyor?",
+    "question": "KTÜ Bilgisayar Mühendisliği hangi programlarda eğitim veriyor?",
     "intent": "general_info",
     "expected_mode": "faq",
     "expected_matched_question": "KTÜ Bilgisayar Mühendisliği Bölümü hangi programlarda eğitim veriyor?"
-=======
-    "question": "KTÜ Bilgisayar Mühendisliği hangi programlarda eğitim veriyor?",
-    "intent": "general_info"
->>>>>>> Stashed changes
   },
   {
     "question": "Lisans eğitimini bitiren öğrencilere hangi unvan verilir?",
@@ -90,7 +85,6 @@
   },
   {
     "question": "Akademik takvime nereden bakabilirim?",
-<<<<<<< Updated upstream
     "intent": "course_info",
     "expected_mode": "faq",
     "expected_matched_question": "Akademik takvimi nereden takip edebilirim?"
@@ -106,16 +100,6 @@
     "intent": "general_info",
     "expected_mode": "fallback",
     "expected_matched_question": null
-=======
-    "intent": "course_info"
-  },
-  {
-    "question": "Akademik takvim ne zaman?",
-    "intent": "course_info"
-  },
-  {
-    "question": "Burs başvurusu nasıl yapılır?",
-    "intent": "general_info"
   },
   {
     "question": "Mezun olduğumda bana verecekleri unvan tam olarak ne oluyor?",
@@ -191,6 +175,5 @@
     "question": "Mustafa hoca bana sınavda sıfır verdi, itiraz dilekçesini nereye verebilirim?",
     "intent": "contact_info",
     "_comment": "Zorluk: 'Mustafa hoca' ve 'sınav' kelimeleri sistemi kandırmaya çalışacak ama asıl niyet dilekçe vermek (iletişim/sekreterlik)."
->>>>>>> Stashed changes
   }
 ]
