@@ -76,7 +76,7 @@ def test_find_best_match_returns_expected_faq_entry(
     expected_entry = QUESTION_TO_ENTRY[expected_question]
     assert match.answer == expected_entry["answer"]
     assert match.source == expected_entry["source"]
-    assert match.confidence >= 0.30
+    assert match.confidence >= 0.50
 
 
 def test_find_best_match_returns_none_for_empty_message(faq_service: FaqService) -> None:
