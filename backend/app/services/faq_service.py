@@ -1,4 +1,5 @@
-﻿from dataclasses import dataclass
+﻿import re
+from dataclasses import dataclass
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -13,10 +14,39 @@ CATEGORY_TO_INTENT = {
     "Contact information": "contact_info",
 }
 
-# Char n-gram kullanıldığı için eşik değeri hafif düşürüldü.
-DEFAULT_MATCH_THRESHOLD = 0.30
+# 0.50 altındaki FAQ eşleşmeleri güvenli kabul edilmez ve fallback'e düşer.
+DEFAULT_MATCH_THRESHOLD = 0.50
 INTENT_MATCH_BONUS = 0.30       # Intent eşleşirse güçlü bonus
 INTENT_MISMATCH_PENALTY = 0.20  # Intent uyuşmazsa ceza (Yanlış fallback'i engellemek için)
+QUESTION_SCORE_WEIGHT = 0.70
+DOCUMENT_SCORE_WEIGHT = 0.30
+CONTENT_STOP_WORDS = {
+    "alabilirim",
+    "atabilirim",
+    "bilgiler",
+    "bilgileri",
+    "edebilirim",
+    "görebilirim",
+    "hakkında",
+    "hangi",
+    "için",
+    "kimler",
+    "nasıl",
+    "neden",
+    "nedir",
+    "nerede",
+    "nereden",
+    "nereye",
+    "oluyor",
+    "yapılır",
+}
+GENERIC_CONTENT_WORDS = {
+    "bilgisayar",
+    "bölüm",
+    "bölümü",
+    "bölümün",
+    "mühendisliği",
+}
 
 @dataclass(frozen=True)
 class FaqMatch:
@@ -28,7 +58,58 @@ class FaqMatch:
     matched_question: str | None = None
 
 def _normalize_text(text: str) -> str:
-    return " ".join(TurkishTextPreprocessor.process(text or ""))
+    text = re.sub(
+        r"\be[\s-]?(?:posta|mail)\b|\bemail\b|\bmail\b",
+        "eposta",
+        text or "",
+        flags=re.IGNORECASE,
+    )
+    return " ".join(TurkishTextPreprocessor.process(text))
+
+def _has_all(text: str, terms: tuple[str, ...]) -> bool:
+    return all(term in text for term in terms)
+
+def _content_tokens(text: str) -> list[str]:
+    return [
+        token
+        for token in _normalize_text(text).split()
+        if len(token) >= 4
+        and token not in CONTENT_STOP_WORDS
+        and token not in GENERIC_CONTENT_WORDS
+    ]
+
+def _has_content_overlap(query_tokens: list[str], document_tokens: list[str]) -> bool:
+    for query_token in query_tokens:
+        for document_token in document_tokens:
+            if query_token.startswith(document_token) or document_token.startswith(query_token):
+                return True
+    return False
+
+def _domain_score_adjustment(
+    normalized_query: str,
+    normalized_question: str,
+    normalized_doc: str,
+) -> float:
+    adjustment = 0.0
+
+    if "ulaş" in normalized_query and "ulaş" in normalized_question:
+        adjustment += 0.25
+
+    if "eposta" in normalized_query and "eposta" in normalized_doc:
+        adjustment += 0.35
+
+    if _has_all(normalized_query, ("laboratuvar", "teknik")):
+        asks_for_list = "kimler" in normalized_query or "sorumluları" in normalized_query
+        is_list_entry = "personel" in normalized_question and "listesi" in normalized_question
+        is_specific_lab = "pc lab" in normalized_question or "grafik lab" in normalized_question
+        mentions_specific_lab = "pc" in normalized_query or "grafik" in normalized_query
+
+        if asks_for_list and is_list_entry:
+            adjustment += 0.20
+        if asks_for_list and is_specific_lab and not mentions_specific_lab:
+            adjustment -= 0.10
+
+    return adjustment
 
 def _faq_entries(faq_repository: FaqRepository) -> list[dict]:
     if hasattr(faq_repository, "get_all"):
@@ -54,12 +135,18 @@ class FaqService:
             return None
 
         valid_entries: list[dict] = []
+        normalized_questions: list[str] = []
         normalized_docs: list[str] = []
+        document_content_tokens: list[list[str]] = []
 
         for entry in _faq_entries(self._faq_repository):
             question = str(entry.get("question", "")).strip()
             answer = str(entry.get("answer", "")).strip()
             if not question or not answer:
+                continue
+
+            normalized_question = _normalize_text(question)
+            if not normalized_question:
                 continue
 
             # Soru ve cevabı birleştirerek daha zengin TF-IDF metni elde et
@@ -69,7 +156,9 @@ class FaqService:
                 continue
 
             valid_entries.append(entry)
+            normalized_questions.append(normalized_question)
             normalized_docs.append(normalized_doc)
+            document_content_tokens.append(_content_tokens(combined_text))
 
         if not valid_entries:
             return None
@@ -82,17 +171,35 @@ class FaqService:
             lowercase=True,
         )
 
-        doc_matrix = vectorizer.fit_transform(normalized_docs)
-        query_vector = vectorizer.transform([normalized_query])
+        question_matrix = vectorizer.fit_transform(normalized_questions)
+        question_vector = vectorizer.transform([normalized_query])
+        question_scores = cosine_similarity(question_vector, question_matrix).ravel()
 
-        cosine_scores = cosine_similarity(query_vector, doc_matrix).ravel()
+        doc_matrix = vectorizer.fit_transform(normalized_docs)
+        doc_vector = vectorizer.transform([normalized_query])
+        doc_scores = cosine_similarity(doc_vector, doc_matrix).ravel()
 
         best_index = -1
         best_score = -1.0
         best_category_boosted = False
+        query_content_tokens = _content_tokens(message)
 
-        for index, (entry, cosine_score) in enumerate(zip(valid_entries, cosine_scores)):
-            adjusted_score = float(cosine_score)
+        for index, entry in enumerate(valid_entries):
+            if query_content_tokens and not _has_content_overlap(
+                query_content_tokens,
+                document_content_tokens[index],
+            ):
+                continue
+
+            base_score = (
+                QUESTION_SCORE_WEIGHT * float(question_scores[index])
+                + DOCUMENT_SCORE_WEIGHT * float(doc_scores[index])
+            )
+            adjusted_score = base_score + _domain_score_adjustment(
+                normalized_query,
+                normalized_questions[index],
+                normalized_docs[index],
+            )
 
             entry_intent = CATEGORY_TO_INTENT.get(str(entry.get("category", "")).strip(), "unknown")
 

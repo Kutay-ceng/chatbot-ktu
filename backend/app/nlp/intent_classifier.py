@@ -35,12 +35,13 @@ class TurkishTextPreprocessor:
 
 class IntentClassifier:
     """Niyet sınıflandırıcı."""
-    
+
     INTENTS = {
         "course_info": [
             "ders", "müfredat", "kredi", "akts", "sınav", "vize", "final",
             "ödev", "geçme", "not", "proje", "quiz", "staj", "takvim", "dönem",
-            "içerik", "haftalık", "zorunlu", "gün"
+            "içerik", "haftalık", "zorunlu", "gün", "stj", "rapor", "mazeret",
+            "sağlık",
         ],
         "academic_staff": [
             "hoca", "profesör", "akademisyen", "öğretim", "asistan",
@@ -49,10 +50,10 @@ class IntentClassifier:
         "contact_info": [
             "iletişim", "telefon", "mail", "posta", "adres", "ulaşım",
             "konum", "fax", "ofis", "oda", "laboratuvar", "teknik", "sorumlu", "sekreter",
-            "numara"
+            "numara", "dilekçe", "itiraz", "eposta",
         ],
         "general_info": [
-            "üniversite", "kampüs", "rektör", "tarihçe", "yurt", "burs",
+            "üniversite", "kampüs", "tarihçe", "yurt", "burs",
             "yemekhane", "kütüphane", "program", "eğitim", "lisans", "hazırlık",
             "ingilizce", "unvan", "ktü", "bilgisayar", "mühendis", "öğrenci", "yemek"
         ],
