@@ -216,3 +216,13 @@ __marimo__/
 # Visual Studio Test Results
 TestResults/
 /.vs
+
+# Visual Studio temporary files
+.vscode/
+*.suo
+*.vsuo
+*.vsidx
+*.slnx.sqlite
+slnx.sqlite
+DocumentLayout.json
+DocumentLayout.backup.json
