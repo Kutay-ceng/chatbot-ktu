@@ -7,11 +7,13 @@ DEFAULT_TIMEOUT_MS = 5000
 
 
 class MongoConfigError(RuntimeError):
-    """Raised when MongoDB configuration is missing or invalid."""
+    """MongoDB ayarı eksik veya hatalı olduğunda fırlatılır."""
 
 
 @dataclass(frozen=True)
 class MongoSettings:
+    # Uygulamanın MongoDB bağlantısı için ihtiyaç duyduğu tüm ayarları tek yerde tutar.
+    # frozen=True sayesinde runtime içinde yanlışlıkla değiştirilmesini engelleriz.
     uri: str | None
     database_name: str = DEFAULT_MONGODB_DB
     connect_timeout_ms: int = DEFAULT_TIMEOUT_MS
@@ -19,6 +21,8 @@ class MongoSettings:
 
     @classmethod
     def from_env(cls, environ: Mapping[str, str] | None = None) -> "MongoSettings":
+        # Testlerde gerçek os.environ yerine sahte bir mapping gönderebilmek için
+        # environ parametresi opsiyonel bırakıldı.
         source = os.environ if environ is None else environ
         return cls(
             uri=_clean(source.get("MONGODB_URI")),
@@ -36,12 +40,15 @@ class MongoSettings:
         )
 
     def require_uri(self) -> str:
+        # MongoDB gerçekten kullanılacağı anda URI zorunlu hale gelir.
+        # Böylece .env yokken bile mevcut FAQ/test akışı bozulmadan çalışabilir.
         if not self.uri:
             raise MongoConfigError("MONGODB_URI is required to connect to MongoDB.")
         return self.uri
 
 
 def _clean(value: str | None) -> str | None:
+    # Env değerlerinde baş/son boşluk varsa temizler; boş stringleri None'a çevirir.
     if value is None:
         return None
     cleaned_value = value.strip()
@@ -53,6 +60,7 @@ def _read_positive_int(
     key: str,
     default: int,
 ) -> int:
+    # Timeout değerlerini env'den okurken pozitif sayı dışında değer kabul etmeyiz.
     value = _clean(environ.get(key))
     if value is None:
         return default
