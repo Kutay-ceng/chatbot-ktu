@@ -26,8 +26,10 @@ class FakeDatabase:
         return self.collection
 
 class FakeMongoClient:
-    def __init__(self, uri: str) -> None:
+    def __init__(self, uri: str, **kwargs: Any) -> None:
         self.uri = uri
+        self.connect_timeout_ms = kwargs["connectTimeoutMS"]
+        self.server_selection_timeout_ms = kwargs["serverSelectionTimeoutMS"]
         self.collection = FakeCollection()
         self.database = FakeDatabase(self.collection)
         self.used_database_name: str | None = None
@@ -43,8 +45,8 @@ class FakeMongoClient:
 def test_seed_faq_writes_json_records_to_mongodb(monkeypatch: Any) -> None:
     created_clients: list[FakeMongoClient] = []
 
-    def fake_mongo_client(uri: str) -> FakeMongoClient:
-        client = FakeMongoClient(uri)
+    def fake_mongo_client(uri: str, **kwargs: Any) -> FakeMongoClient:
+        client = FakeMongoClient(uri, **kwargs)
         created_clients.append(client)
         return client
 
@@ -60,9 +62,12 @@ def test_seed_faq_writes_json_records_to_mongodb(monkeypatch: Any) -> None:
 
     monkeypatch.setattr(seed_module, "MongoClient", fake_mongo_client)
     monkeypatch.setattr(seed_module, "load_faq", fake_load_faq)
+
     monkeypatch.setenv("MONGODB_URI", "mongodb://test-host:27017")
     monkeypatch.setenv("MONGODB_DB", "test_db")
     monkeypatch.setenv("MONGODB_FAQ_COLLECTION", "test_faqs")
+    monkeypatch.setenv("MONGODB_CONNECT_TIMEOUT_MS", "5000")
+    monkeypatch.setenv("MONGODB_SERVER_SELECTION_TIMEOUT_MS", "5000")
 
     changed_count = seed_module.seed_faq()
 
@@ -70,6 +75,8 @@ def test_seed_faq_writes_json_records_to_mongodb(monkeypatch: Any) -> None:
 
     client = created_clients[0]
     assert client.uri == "mongodb://test-host:27017"
+    assert client.connect_timeout_ms == 5000
+    assert client.server_selection_timeout_ms == 5000
     assert client.used_database_name == "test_db"
     assert client.database.used_collection_name == "test_faqs"
     assert len(client.collection.operations) == 1
