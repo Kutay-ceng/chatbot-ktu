@@ -84,6 +84,23 @@ def test_in_memory_vector_store_search_returns_relevant_chunks() -> None:
     assert results[0].id == "doc-1-0"
 
 
+def test_simple_document_loader_handles_missing_source() -> None:
+    entries = [
+        {
+            "id": "doc-no-source",
+            "title": "Kaynaksız Belge",
+            "text": "Bu belgenin source alanı bilerek verilmemiştir.",
+            # "source" anahtarı yok
+        }
+    ]
+    loader = SimpleDocumentLoader(entries)
+    documents = loader.load()
+
+    assert len(documents) == 1
+    # Arkadaşının belirttiği gibi document'in source alanı None olmalı
+    assert documents[0].source is None
+
+
 def test_retrieval_service_returns_search_result_structure() -> None:
     document = RagDocument(
         id="doc-1",
@@ -95,18 +112,20 @@ def test_retrieval_service_returns_search_result_structure() -> None:
             source_type="faq",
         ),
     )
-    loader = SimpleDocumentLoader([
-        {
-            "id": document.id,
-            "title": document.title,
-            "text": document.text,
-            "source": {
-                "title": document.source.title,
-                "url": document.source.url,
-                "type": document.source.source_type,
-            },
-        }
-    ])
+    loader = SimpleDocumentLoader(
+        [
+            {
+                "id": document.id,
+                "title": document.title,
+                "text": document.text,
+                "source": {
+                    "title": document.source.title,
+                    "url": document.source.url,
+                    "type": document.source.source_type,
+                },
+            }
+        ]
+    )
     documents = loader.load()
 
     store = InMemoryVectorStore()

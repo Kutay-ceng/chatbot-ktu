@@ -27,10 +27,12 @@ class SimpleDocumentLoader(DocumentLoader):
             document_id = str(entry.get("id", index))
             title = str(entry.get("title", "")).strip()
             text = str(entry.get("text", "")).strip()
-            source_data = entry.get("source") or {}
+            # Değişiklik burada: or {} kaldırıldı
+            source_data = entry.get("source")
             source = None
 
-            if isinstance(source_data, dict):
+            # Değişiklik burada: and source_data eklendi
+            if isinstance(source_data, dict) and source_data:
                 source = RagSource(
                     title=str(source_data.get("title", "")).strip(),
                     url=str(source_data.get("url", "")).strip() or None,

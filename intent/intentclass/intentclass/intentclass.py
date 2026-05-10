@@ -1,4 +1,4 @@
-﻿from backend.app.nlp import IntentClassifier
+from backend.app.nlp import IntentClassifier
 
 
 def main() -> None:
