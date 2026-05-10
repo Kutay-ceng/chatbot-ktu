@@ -1,5 +1,6 @@
-import sys
 import os
+import sys
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from document_loader import belgeleri_yukle
@@ -8,7 +9,11 @@ from chunker import Dograyici
 def veritabanina_kaydet(parcalar):
     print(f"\n--- Toplam {len(parcalar)} parça veritabanına gönderiliyor ---")
     for parca in parcalar:
-        print(f"Barkod: {parca['content_hash'][:10]}... | Belge: {parca['doc_id']} | Metin: {parca['chunk_text'][:20]}...")
+        print(
+            f"Barkod: {parca['content_hash'][:10]}... | "
+            f"Belge: {parca['doc_id']} | "
+            f"Metin: {parca['chunk_text'][:20]}..."
+        )
 
 def main():
     dosya_yolu = "data/ornek_veriler.jsonl"
