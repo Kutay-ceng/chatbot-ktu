@@ -188,3 +188,20 @@ class MongoSessionStore:
             )
             for message in document.get("messages", [])
         ]
+
+
+def create_default_session_store() -> SessionStore:
+    store_type = os.getenv(SESSION_STORE_ENV, "memory").strip().lower()
+    if store_type in {"mongo", "mongodb"}:
+        from backend.app.db.mongo import get_mongo_database
+
+        collection_name = (
+            os.getenv("MONGODB_SESSION_COLLECTION", DEFAULT_SESSION_COLLECTION).strip()
+            or DEFAULT_SESSION_COLLECTION
+        )
+        return MongoSessionStore(
+            database=get_mongo_database(),
+            collection_name=collection_name,
+        )
+
+    return InMemorySessionStore()
