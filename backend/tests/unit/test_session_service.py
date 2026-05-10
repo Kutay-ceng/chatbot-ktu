@@ -145,3 +145,51 @@ def test_mongo_session_store_appends_exchange_to_session_document():
         "mode": "faq",
         "matched_question": "Bölüm başkanı kim?",
     }
+
+
+def test_mongo_session_store_keeps_same_session_and_trims_messages():
+    database = FakeDatabase()
+    store = MongoSessionStore(
+        database=database,
+        collection_name="chat_sessions",
+        max_messages_per_session=2,
+    )
+    response = _chat_response()
+
+    store.append_exchange("session-1", "ilk soru", response)
+    store.append_exchange("session-1", "ikinci soru", response)
+
+    history = store.get_history("session-1")
+    assert len(history) == 2
+    assert history[0].role == "user"
+    assert history[0].content == "ikinci soru"
+    assert history[1].role == "assistant"
+    assert history[1].metadata["matched_question"] == "Bölüm başkanı kim?"
+
+
+def test_mongo_session_store_get_history_respects_limit():
+    database = FakeDatabase()
+    store = MongoSessionStore(database=database, collection_name="chat_sessions")
+    response = _chat_response()
+    store.append_exchange("session-1", "ilk soru", response)
+    store.append_exchange("session-1", "ikinci soru", response)
+
+    history = store.get_history("session-1", limit=1)
+
+    assert len(history) == 1
+    assert history[0].role == "assistant"
+
+
+def test_create_default_session_store_uses_mongo_when_configured(monkeypatch):
+    database = FakeDatabase()
+    monkeypatch.setenv("CHAT_SESSION_STORE", "mongo")
+    monkeypatch.setenv("MONGODB_SESSION_COLLECTION", "test_chat_sessions")
+    monkeypatch.setattr(
+        "backend.app.db.mongo.get_mongo_database",
+        lambda: database,
+    )
+
+    store = session_module.create_default_session_store()
+
+    assert isinstance(store, MongoSessionStore)
+    assert database.used_collection_name == "test_chat_sessions"
