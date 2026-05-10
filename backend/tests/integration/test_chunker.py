@@ -1,9 +1,9 @@
 import os
 import sys
 
-from chunker import Dograyici
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from chunker import Dograyici
 
 
 def test_ayni_metne_ayni_barkod_uretilmeli():
