@@ -9,13 +9,9 @@ app = FastAPI(
 
 @app.get("/")
 def read_root():
-    return {
-        "message": "KTU CENG chatbot backend is running"
-    }
+    return {"message": "KTU CENG chatbot backend is running"}
 
 
 @app.get("/health")
 def health_check():
-    return {
-        "status": "ok"
-    }
+    return {"status": "ok"}

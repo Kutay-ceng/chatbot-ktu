@@ -1,6 +1,7 @@
 from chunker import Dograyici
 from document_loader import belgeleri_yukle
 
+
 def veritabanina_kaydet(parcalar):
     print(f"\n--- Toplam {len(parcalar)} parça veritabanına gönderiliyor ---")
     for parca in parcalar:
@@ -9,6 +10,7 @@ def veritabanina_kaydet(parcalar):
             f"Belge: {parca['doc_id']} | "
             f"Metin: {parca['chunk_text'][:20]}..."
         )
+
 
 def main():
     dosya_yolu = "data/ornek_veriler.jsonl"
@@ -20,6 +22,7 @@ def main():
         kucuk_parcalar = dograyici.parcalara_bol(belge)
         tum_parcalar.extend(kucuk_parcalar)
     veritabanina_kaydet(tum_parcalar)
+
 
 if __name__ == "__main__":
     main()
