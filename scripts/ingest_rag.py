@@ -1,6 +1,3 @@
-import os
-import sys
-
 from chunker import Dograyici
 from document_loader import belgeleri_yukle
 
