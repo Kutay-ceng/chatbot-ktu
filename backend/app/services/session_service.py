@@ -118,3 +118,48 @@ class MongoSessionStore:
         if cleaned_session_id:
             return cleaned_session_id
         return str(uuid4())
+
+    def append_exchange(
+        self,
+        session_id: str,
+        user_message: str,
+        response: ChatResponse,
+    ) -> None:
+        now = datetime.now(UTC)
+        user_record = {
+            "role": "user",
+            "content": user_message,
+            "metadata": {},
+            "created_at": now,
+        }
+        assistant_record = {
+            "role": "assistant",
+            "content": response.answer,
+            "metadata": {
+                "intent": response.intent,
+                "confidence": response.confidence,
+                "mode": response.mode,
+                "matched_question": response.matched_question,
+            },
+            "created_at": now,
+        }
+
+        self._collection.update_one(
+            {"session_id": session_id},
+            {
+                "$setOnInsert": {
+                    "session_id": session_id,
+                    "created_at": now,
+                },
+                "$set": {
+                    "updated_at": now,
+                },
+                "$push": {
+                    "messages": {
+                        "$each": [user_record, assistant_record],
+                        "$slice": -self._max_messages_per_session,
+                    }
+                },
+            },
+            upsert=True,
+        )
