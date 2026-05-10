@@ -1,4 +1,4 @@
-﻿import json
+import json
 import sys
 from pathlib import Path
 
@@ -35,9 +35,7 @@ def _check_case(case: dict, response) -> list[str]:
     if "expected_matched_question" in case:
         expected_match = case.get("expected_matched_question")
         if response.matched_question != expected_match:
-            errors.append(
-                f"match {expected_match!r} yerine {response.matched_question!r}"
-            )
+            errors.append(f"match {expected_match!r} yerine {response.matched_question!r}")
 
     return errors
 
@@ -64,9 +62,7 @@ def run_evaluation(data_path: Path | None = None) -> dict[str, int]:
 
     print(f" KTU Chatbot E2E Testi Baslatildi ({total} Senaryo)")
     print("-" * 125)
-    print(
-        f"{'SORU':<38} | {'INTENT':<27} | {'MODE':<17} | {'FAQ MATCH':<10} | {'DURUM'}"
-    )
+    print(f"{'SORU':<38} | {'INTENT':<27} | {'MODE':<17} | {'FAQ MATCH':<10} | {'DURUM'}")
     print("-" * 125)
 
     for index, case in enumerate(test_cases, start=1):

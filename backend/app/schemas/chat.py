@@ -21,4 +21,3 @@ class ChatResponse(BaseModel):
     matched_question: str | None = None
     sources: list[ChatSource] = Field(default_factory=list)
     session_id: str | None = None
-    

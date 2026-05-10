@@ -1,4 +1,4 @@
-﻿from backend.app.schemas.chat import ChatResponse
+from backend.app.schemas.chat import ChatResponse
 from backend.app.services.faq_service import FaqService
 from backend.app.services.intent_service import IntentService
 from backend.app.services.session_service import InMemorySessionStore

@@ -10,8 +10,11 @@ NON_EMPTY_FIELDS = {"question", "answer"}
 
 DEFAULT_FAQ_PATH = Path(__file__).resolve().parents[3] / "data" / "faq" / "faq.json"
 
+
 class FaqLoadError(Exception):
-    """ faq dosyasını yüklerken oluşan hatalar için """
+    """faq dosyasını yüklerken oluşan hatalar için"""
+
+
 def load_faq(file_path: str | Path | None = None) -> list[dict[str, str]]:
     path = Path(file_path) if file_path is not None else DEFAULT_FAQ_PATH
 
@@ -24,10 +27,7 @@ def load_faq(file_path: str | Path | None = None) -> list[dict[str, str]]:
         with path.open("r", encoding="utf-8-sig") as faq_file:
             data = json.load(faq_file)
     except json.JSONDecodeError as exc:
-        message = (
-            f"Invalid FAQ JSON in '{path}': "
-            f"line {exc.lineno}, column {exc.colno}."
-        )
+        message = f"Invalid FAQ JSON in '{path}': line {exc.lineno}, column {exc.colno}."
         logger.error(message)
         raise FaqLoadError(message) from exc
     except OSError as exc:
@@ -51,9 +51,7 @@ def _validate_record(record: Any, index: int) -> dict[str, str]:
 
     if missing_fields:
         fields = ", ".join(sorted(missing_fields))
-        raise FaqLoadError(
-            f"FAQ record #{index} is missing required field(s): {fields}."
-        )
+        raise FaqLoadError(f"FAQ record #{index} is missing required field(s): {fields}.")
 
     validated_record: dict[str, str] = {}
 
@@ -61,16 +59,12 @@ def _validate_record(record: Any, index: int) -> dict[str, str]:
         value = record[field]
 
         if not isinstance(value, str):
-            raise FaqLoadError(
-                f"FAQ record #{index} field '{field}' must be a string."
-            )
+            raise FaqLoadError(f"FAQ record #{index} field '{field}' must be a string.")
 
         cleaned_value = value.strip()
 
         if field in NON_EMPTY_FIELDS and not cleaned_value:
-            raise FaqLoadError(
-                f"FAQ record #{index} field '{field}' must not be empty."
-            )
+            raise FaqLoadError(f"FAQ record #{index} field '{field}' must not be empty.")
 
         validated_record[field] = cleaned_value
 
