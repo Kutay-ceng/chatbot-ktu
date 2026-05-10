@@ -1,7 +1,12 @@
+import os
 from dataclasses import dataclass, field
+from typing import Protocol
 from uuid import uuid4
 
 from backend.app.schemas.chat import ChatResponse
+
+DEFAULT_SESSION_COLLECTION = "chat_sessions"
+SESSION_STORE_ENV = "CHAT_SESSION_STORE"
 
 
 @dataclass(frozen=True)
@@ -11,6 +16,26 @@ class ConversationMessage:
     role: str
     content: str
     metadata: dict[str, str | float | None] = field(default_factory=dict)
+
+
+class SessionStore(Protocol):
+    def resolve_session_id(self, session_id: str | None = None) -> str:
+        """Mevcut session_id'yi temizler veya yeni bir id üretir."""
+
+    def append_exchange(
+        self,
+        session_id: str,
+        user_message: str,
+        response: ChatResponse,
+    ) -> None:
+        """Kullanıcı mesajını ve asistan cevabını aynı oturuma ekler."""
+
+    def get_history(
+        self,
+        session_id: str,
+        limit: int | None = None,
+    ) -> list[ConversationMessage]:
+        """Oturum geçmişini döndürür."""
 
 
 class InMemorySessionStore:
