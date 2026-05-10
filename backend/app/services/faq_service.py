@@ -1,3 +1,4 @@
+import os
 import re
 from dataclasses import dataclass
 
@@ -126,6 +127,19 @@ def _faq_entries(faq_repository: FaqRepository) -> list[dict]:
         return faq_repository.list_entries()
     raise AttributeError("FaqRepository must implement get_all()")
 
+def _default_faq_repository() -> object:
+    repository_type = os.getenv("FAQ_REPOSITORY", "json").strip().lower()
+
+    if repository_type == "mongo":
+        from backend.app.db.mongo import get_mongo_database
+        from backend.app.repositories.mongo_faq_repository import MongoFaqRepository
+
+        collection_name = os.getenv("MONGODB_FAQ_COLLECTION", "faqs")
+        return MongoFaqRepository(
+            database=get_mongo_database(),
+            collection_name=collection_name,
+        )
+    return FaqRepository()
 
 class FaqService:
     """SSS arama ve eşleştirme servisi."""
@@ -135,7 +149,7 @@ class FaqService:
         faq_repository: FaqRepository | None = None,
         match_threshold: float = DEFAULT_MATCH_THRESHOLD,
     ) -> None:
-        self._faq_repository = faq_repository or FaqRepository()
+        self._faq_repository = faq_repository or _default_faq_repository()
         self._match_threshold = match_threshold
 
     def find_best_match(self, message: str, intent: str) -> FaqMatch | None:
@@ -149,8 +163,12 @@ class FaqService:
         document_content_tokens: list[list[str]] = []
 
         for entry in _faq_entries(self._faq_repository):
+            if entry.get("is_active", True) is False:
+                continue
+            
             question = str(entry.get("question", "")).strip()
             answer = str(entry.get("answer", "")).strip()
+
             if not question or not answer:
                 continue
 
