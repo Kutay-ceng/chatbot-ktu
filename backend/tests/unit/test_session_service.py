@@ -118,3 +118,30 @@ def test_append_exchange_trims_old_messages():
     assert len(history) == 2
     assert history[0].content == "ikinci soru"
     assert history[1].content == "Yanıt"
+
+
+def test_mongo_session_store_appends_exchange_to_session_document():
+    database = FakeDatabase()
+    store = MongoSessionStore(database=database, collection_name="chat_sessions")
+    response = _chat_response()
+
+    store.append_exchange("session-1", "Bölüm başkanı kim?", response)
+
+    assert database.used_collection_name == "chat_sessions"
+    collection = database.collection
+    assert collection.last_filter == {"session_id": "session-1"}
+    assert collection.last_upsert is True
+
+    document = collection.documents["session-1"]
+    assert document["session_id"] == "session-1"
+    assert "created_at" in document
+    assert "updated_at" in document
+    assert [message["role"] for message in document["messages"]] == ["user", "assistant"]
+    assert document["messages"][0]["content"] == "Bölüm başkanı kim?"
+    assert document["messages"][1]["content"] == response.answer
+    assert document["messages"][1]["metadata"] == {
+        "intent": "academic_staff",
+        "confidence": 1.0,
+        "mode": "faq",
+        "matched_question": "Bölüm başkanı kim?",
+    }
