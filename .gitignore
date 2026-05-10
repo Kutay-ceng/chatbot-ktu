@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+﻿# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
 *$py.class
@@ -206,3 +206,23 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 .idea/
+
+# Visual Studio
+.vs/
+
+# Created by pytest automatically.
+.pytest_cache/
+
+# Visual Studio Test Results
+TestResults/
+/.vs
+
+# Visual Studio temporary files
+.vscode/
+*.suo
+*.vsuo
+*.vsidx
+*.slnx.sqlite
+slnx.sqlite
+DocumentLayout.json
+DocumentLayout.backup.json

@@ -104,7 +104,69 @@ Sistem aşağıdaki bilgileri sağlayabilmelidir:
 - Proje belirli bir süre içinde tamamlanmalıdır
 - Akademik dönem takvimi zaman kısıtı oluşturmaktadır
 - Sistem yalnızca **KTÜ Bilgisayar Mühendisliği** bölümüne yönelik olacaktır
+---
 
+# API Kontratı ve Entegrasyon
+
+Frontend, LLM ve RAG ekiplerinin aynı standartta çalışabilmesi için `/chat` uç noktasının (endpoint) girdi ve çıktı formatları aşağıda tanımlanmıştır. Frontend ekibi geliştirme aşamasında bu yapıya bakarak sahte (mock) yanıtlar hazırlayabilir.
+
+## 1. İstek (Request) Formatı
+
+İstemci (Frontend) tarafından `/chat` uç noktasına yapılacak `POST` isteğinin JSON gövdesi aşağıdaki gibidir:
+
+```json
+POST /chat
+{
+  "message": "Kütüphane hafta sonu açık mı?",
+  "session_id": "req-12345" 
+}
+```
+
+## 2. Yanıt (Response) Modelleri ve Parametreler
+
+API'den dönen yanıtta, sistemin arka planda hangi mekanizmayı çalıştırdığını belirtmek için `mode` alanı, yanıtın dayanağını göstermek için ise `sources` alanı kullanılır.
+
+### `mode` Değerleri
+
+- **`faq`**: Kullanıcının amacı (intent) sınıflandırıcı tarafından net bir şekilde tespit edildiğinde ve SSS veri setinden statik bir metin döndüğünde kullanılır.
+- **`fallback`**: Sistem soruyu anlayamadığında, niyet eşleşmediğinde veya beklenen bir veri bulunamadığında dönen standart yedek (kurtarma) yanıtıdır.
+- **`llm`**: Herhangi bir dış belge aranmaksızın doğrudan model tarafından üretilmiş jenerik bir yanıt dönüldüğünde kullanılacaktır.
+- **`rag`**: Veri tabanından veya belgelerden arama yapılıp (Retrieval), bu bağlamın LLM'e verilmesiyle üretilen dinamik yanıtlar için kullanılacaktır.
+
+### `sources` Alanı
+
+- Verilen yanıtın dayandığı referansları Frontend'e iletmek için kullanılır.
+- SSS (`faq`) modunda web sayfası linkleri veya formlar, `rag` modunda ise alıntı yapılan doküman isimleri yer alır.
+- Bilgi kaynağı yoksa (örneğin `fallback` modunda) boş bir dizi (`[]`) olarak dönmelidir.
+
+## 3. Yanıt (Response) Örnekleri
+
+### Örnek A: SSS (FAQ) Yanıtı
+Bilinen bir niyet (intent) yakalandığında döner.
+
+```json
+{
+  "answer": "Faık Ahmet Barutçu Kütüphanesi hafta sonları 09:00 - 17:00 saatleri arasında hizmet vermektedir. Vize ve final dönemlerinde bu saatler 7/24 olacak şekilde güncellenmektedir.",
+  "mode": "faq",
+  "sources": [
+    {
+      "title": "Kütüphane Çalışma Saatleri",
+      "url": "https://www.ktu.edu.tr/kutuphane"
+    }
+  ]
+}
+```
+
+### Örnek B: Geri Dönüş (Fallback) Yanıtı
+Soru anlaşılamadığında veya sistem yanıt üretemediğinde döner.
+
+```json
+{
+  "answer": "Üzgünüm, sorunuzu tam olarak anlayamadım veya şu anda bu bilgiye ulaşamıyorum. Lütfen sorunuzu farklı kelimelerle tekrar ifade etmeyi deneyin.",
+  "mode": "fallback",
+  "sources": []
+}
+```
 ---
 
 # Risk Yönetimi
@@ -182,6 +244,17 @@ Chatbot eğitimi için yeterli soru bulunamayabilir.
 
 # Proje Grubu İş Paylaşımı
 
+## Gereksinim Analizi Raporu
+**Lider:** Onur Karaahmet
+
+Sorumluluklar:
+
+- Fonksiyonel ve fonksiyonel olmayan gereksinimlerin belirlenmesi
+- Sistem kısıtlarının tanımlanması
+- Riskleri azaltmaya yönelik gereksinim çerçevesi oluşturmak
+
+---
+
 ## Mimari Tasarım Raporu
 **Lider:** Kutay Keleş
 
@@ -203,17 +276,6 @@ Sorumluluklar:
 - Performans analizleri
 - Elde edilen sonuçların raporlanması
 - Genel proje değerlendirmesi
-
----
-
-## Gereksinim Analizi Raporu
-**Lider:** Onur Karaahmet
-
-Sorumluluklar:
-
-- Fonksiyonel ve fonksiyonel olmayan gereksinimlerin belirlenmesi
-- Sistem kısıtlarının tanımlanması
-- Riskleri azaltmaya yönelik gereksinim çerçevesi oluşturmak
 
 ---
 

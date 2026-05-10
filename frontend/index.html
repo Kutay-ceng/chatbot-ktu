@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KTÜ Chatbot Admin Test Panel</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <h2>KTÜ Chatbot</h2>
+          <p>Admin / Test Panel</p>
+        </div>
+
+        <div class="side-card">
+          <label for="backendUrl">Backend URL</label>
+          <input
+            id="backendUrl"
+            type="text"
+            value="http://127.0.0.1:8000/chat"
+          />
+        </div>
+
+        <div class="side-card">
+          <label>Session ID</label>
+          <div id="sessionId" class="session-id"></div>
+          <button id="newSessionBtn" type="button" class="secondary-btn">
+            Yeni Session Başlat
+          </button>
+        </div>
+
+        <div class="side-card">
+          <label>Mod Renkleri</label>
+          <div class="badges">
+            <span class="badge faq">FAQ</span>
+            <span class="badge fallback">Fallback</span>
+            <span class="badge rag">RAG / LLM</span>
+            <span class="badge error">Error</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="header">
+          <div>
+            <h1>Chat Test Paneli</h1>
+            <p>
+              /chat endpoint’ini test et, cevabı ve debug bilgilerini kontrol et.
+            </p>
+          </div>
+        </header>
+
+        <section id="messages" class="messages">
+          <div class="empty-state">
+            <h3>Henüz mesaj yok</h3>
+            <p>
+              Aşağıdan bir soru yaz. Bot cevabı, confidence, mode, intent,
+              matched_question, sources ve session_id bilgileri burada görünecek.
+            </p>
+          </div>
+        </section>
+
+        <form id="chatForm" class="input-area">
+          <textarea
+            id="messageInput"
+            placeholder="Örn: Bilgisayar mühendisliği bölümü hangi programlarda eğitim veriyor?"
+            rows="1"
+          ></textarea>
+
+          <button type="submit">Gönder</button>
+        </form>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
