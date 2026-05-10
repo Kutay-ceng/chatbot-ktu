@@ -8,6 +8,8 @@ from backend.app.schemas.chat import ChatResponse
 
 DEFAULT_SESSION_COLLECTION = "chat_sessions"
 SESSION_STORE_ENV = "CHAT_SESSION_STORE"
+MEMORY_SESSION_STORE_TYPES = {"memory", "inmemory", "in_memory"}
+MONGO_SESSION_STORE_TYPES = {"mongo", "mongodb"}
 
 
 @dataclass(frozen=True)
@@ -39,18 +41,43 @@ class SessionStore(Protocol):
         """Oturum geçmişini döndürür."""
 
 
+def _clean_session_id(session_id: str | None = None) -> str:
+    cleaned_session_id = (session_id or "").strip()
+    if cleaned_session_id:
+        return cleaned_session_id
+    return str(uuid4())
+
+
+def _validate_max_messages(max_messages_per_session: int) -> int:
+    if max_messages_per_session <= 0:
+        raise ValueError("max_messages_per_session must be greater than zero")
+    return max_messages_per_session
+
+
+def _assistant_metadata(response: ChatResponse) -> dict[str, str | float | None]:
+    return {
+        "intent": response.intent,
+        "confidence": response.confidence,
+        "mode": response.mode,
+        "matched_question": response.matched_question,
+    }
+
+
+def _coerce_metadata(value: Any) -> dict[str, str | float | None]:
+    if isinstance(value, dict):
+        return value
+    return {}
+
+
 class InMemorySessionStore:
     """Gelistirme ortami icin process ici oturum gecmisi."""
 
     def __init__(self, max_messages_per_session: int = 20) -> None:
-        self._max_messages_per_session = max_messages_per_session
+        self._max_messages_per_session = _validate_max_messages(max_messages_per_session)
         self._sessions: dict[str, list[ConversationMessage]] = {}
 
     def resolve_session_id(self, session_id: str | None = None) -> str:
-        cleaned_session_id = (session_id or "").strip()
-        if cleaned_session_id:
-            return cleaned_session_id
-        return str(uuid4())
+        return _clean_session_id(session_id)
 
     def append_exchange(
         self,
@@ -65,12 +92,7 @@ class InMemorySessionStore:
                 ConversationMessage(
                     role="assistant",
                     content=response.answer,
-                    metadata={
-                        "intent": response.intent,
-                        "confidence": response.confidence,
-                        "mode": response.mode,
-                        "matched_question": response.matched_question,
-                    },
+                    metadata=_assistant_metadata(response),
                 ),
             ]
         )
@@ -86,6 +108,8 @@ class InMemorySessionStore:
         messages = self._sessions.get(session_id, [])
         if limit is None:
             return list(messages)
+        if limit <= 0:
+            return []
         return messages[-limit:]
 
     def clear(self) -> None:
@@ -111,13 +135,10 @@ class MongoSessionStore:
         max_messages_per_session: int = 20,
     ) -> None:
         self._collection = database[collection_name]
-        self._max_messages_per_session = max_messages_per_session
+        self._max_messages_per_session = _validate_max_messages(max_messages_per_session)
 
     def resolve_session_id(self, session_id: str | None = None) -> str:
-        cleaned_session_id = (session_id or "").strip()
-        if cleaned_session_id:
-            return cleaned_session_id
-        return str(uuid4())
+        return _clean_session_id(session_id)
 
     def append_exchange(
         self,
@@ -135,12 +156,7 @@ class MongoSessionStore:
         assistant_record = {
             "role": "assistant",
             "content": response.answer,
-            "metadata": {
-                "intent": response.intent,
-                "confidence": response.confidence,
-                "mode": response.mode,
-                "matched_question": response.matched_question,
-            },
+            "metadata": _assistant_metadata(response),
             "created_at": now,
         }
 
@@ -169,6 +185,9 @@ class MongoSessionStore:
         session_id: str,
         limit: int | None = None,
     ) -> list[ConversationMessage]:
+        if limit is not None and limit <= 0:
+            return []
+
         projection: dict[str, Any] = {"_id": 0, "messages": 1}
         if limit is not None:
             projection["messages"] = {"$slice": -limit}
@@ -184,15 +203,15 @@ class MongoSessionStore:
             ConversationMessage(
                 role=str(message.get("role", "")),
                 content=str(message.get("content", "")),
-                metadata=message.get("metadata") or {},
+                metadata=_coerce_metadata(message.get("metadata")),
             )
             for message in document.get("messages", [])
         ]
 
 
 def create_default_session_store() -> SessionStore:
-    store_type = os.getenv(SESSION_STORE_ENV, "memory").strip().lower()
-    if store_type in {"mongo", "mongodb"}:
+    store_type = os.getenv(SESSION_STORE_ENV, "memory").strip().lower() or "memory"
+    if store_type in MONGO_SESSION_STORE_TYPES:
         from backend.app.db.mongo import get_mongo_database
 
         collection_name = (
@@ -203,5 +222,8 @@ def create_default_session_store() -> SessionStore:
             database=get_mongo_database(),
             collection_name=collection_name,
         )
+
+    if store_type not in MEMORY_SESSION_STORE_TYPES:
+        raise ValueError(f"{SESSION_STORE_ENV} must be 'memory' or 'mongo'.")
 
     return InMemorySessionStore()

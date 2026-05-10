@@ -1,3 +1,5 @@
+import pytest
+
 from backend.app.schemas.chat import ChatResponse
 from backend.app.services import session_service as session_module
 from backend.app.services.session_service import InMemorySessionStore, MongoSessionStore
@@ -120,6 +122,18 @@ def test_append_exchange_trims_old_messages():
     assert history[1].content == "Yanıt"
 
 
+def test_in_memory_session_store_rejects_non_positive_history_size():
+    with pytest.raises(ValueError, match="max_messages_per_session"):
+        InMemorySessionStore(max_messages_per_session=0)
+
+
+def test_in_memory_session_store_returns_empty_history_for_zero_limit():
+    store = InMemorySessionStore()
+    store.append_exchange("session-1", "Bölüm başkanı kim?", _chat_response())
+
+    assert store.get_history("session-1", limit=0) == []
+
+
 def test_mongo_session_store_appends_exchange_to_session_document():
     database = FakeDatabase()
     store = MongoSessionStore(database=database, collection_name="chat_sessions")
@@ -180,6 +194,15 @@ def test_mongo_session_store_get_history_respects_limit():
     assert history[0].role == "assistant"
 
 
+def test_mongo_session_store_returns_empty_history_for_zero_limit():
+    database = FakeDatabase()
+    store = MongoSessionStore(database=database, collection_name="chat_sessions")
+    response = _chat_response()
+    store.append_exchange("session-1", "ilk soru", response)
+
+    assert store.get_history("session-1", limit=0) == []
+
+
 def test_create_default_session_store_uses_mongo_when_configured(monkeypatch):
     database = FakeDatabase()
     monkeypatch.setenv("CHAT_SESSION_STORE", "mongo")
@@ -193,3 +216,18 @@ def test_create_default_session_store_uses_mongo_when_configured(monkeypatch):
 
     assert isinstance(store, MongoSessionStore)
     assert database.used_collection_name == "test_chat_sessions"
+
+
+def test_create_default_session_store_uses_memory_when_env_is_blank(monkeypatch):
+    monkeypatch.setenv("CHAT_SESSION_STORE", "  ")
+
+    store = session_module.create_default_session_store()
+
+    assert isinstance(store, InMemorySessionStore)
+
+
+def test_create_default_session_store_rejects_unknown_store_type(monkeypatch):
+    monkeypatch.setenv("CHAT_SESSION_STORE", "mongoo")
+
+    with pytest.raises(ValueError, match="CHAT_SESSION_STORE"):
+        session_module.create_default_session_store()
