@@ -1,6 +1,7 @@
 import os
 from dataclasses import dataclass, field
-from typing import Protocol
+from datetime import UTC, datetime
+from typing import Any, Protocol
 from uuid import uuid4
 
 from backend.app.schemas.chat import ChatResponse
@@ -89,3 +90,31 @@ class InMemorySessionStore:
 
     def clear(self) -> None:
         self._sessions.clear()
+
+
+class MongoSessionStore:
+    """MongoDB üzerinde kalıcı oturum geçmişi saklar.
+
+    chat_sessions şeması:
+    {
+        session_id,
+        created_at,
+        updated_at,
+        messages: [{role, content, metadata, created_at}]
+    }
+    """
+
+    def __init__(
+        self,
+        database: Any,
+        collection_name: str = DEFAULT_SESSION_COLLECTION,
+        max_messages_per_session: int = 20,
+    ) -> None:
+        self._collection = database[collection_name]
+        self._max_messages_per_session = max_messages_per_session
+
+    def resolve_session_id(self, session_id: str | None = None) -> str:
+        cleaned_session_id = (session_id or "").strip()
+        if cleaned_session_id:
+            return cleaned_session_id
+        return str(uuid4())
