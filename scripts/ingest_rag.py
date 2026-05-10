@@ -1,10 +1,8 @@
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from document_loader import belgeleri_yukle
 from chunker import Dograyici
+from document_loader import belgeleri_yukle
 
 def veritabanina_kaydet(parcalar):
     print(f"\n--- Toplam {len(parcalar)} parça veritabanına gönderiliyor ---")
