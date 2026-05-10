@@ -1,7 +1,7 @@
 ﻿from backend.app.schemas.chat import ChatResponse
 from backend.app.services.faq_service import FaqService
 from backend.app.services.intent_service import IntentService
-from backend.app.services.session_service import InMemorySessionStore
+from backend.app.services.session_service import SessionStore, create_default_session_store
 
 FALLBACK_ANSWER = (
     "Sorunu net anlayamadım. Bölüm, dersler, akademik kadro veya iletişim bilgileri "
@@ -16,11 +16,11 @@ class ChatService:
         self,
         intent_service: IntentService | None = None,
         faq_service: FaqService | None = None,
-        session_store: InMemorySessionStore | None = None,
+        session_store: SessionStore | None = None,
     ) -> None:
         self._intent_service = intent_service or IntentService()
         self._faq_service = faq_service or FaqService()
-        self._session_store = session_store or InMemorySessionStore()
+        self._session_store = session_store or create_default_session_store()
 
     def handle_message(self, message: str, session_id: str | None = None) -> ChatResponse:
         """Mesajı işler ve yapılandırılmış cevap döner."""
