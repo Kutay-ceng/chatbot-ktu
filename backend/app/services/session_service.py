@@ -163,3 +163,28 @@ class MongoSessionStore:
             },
             upsert=True,
         )
+
+    def get_history(
+        self,
+        session_id: str,
+        limit: int | None = None,
+    ) -> list[ConversationMessage]:
+        projection: dict[str, Any] = {"_id": 0, "messages": 1}
+        if limit is not None:
+            projection["messages"] = {"$slice": -limit}
+
+        document = self._collection.find_one(
+            {"session_id": session_id},
+            projection,
+        )
+        if not document:
+            return []
+
+        return [
+            ConversationMessage(
+                role=str(message.get("role", "")),
+                content=str(message.get("content", "")),
+                metadata=message.get("metadata") or {},
+            )
+            for message in document.get("messages", [])
+        ]
