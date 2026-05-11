@@ -1,6 +1,7 @@
 import json
 import os
 
+
 def validate_document(doc):
     """Belgenin gerekli tüm alanlara sahip olup olmadığını kontrol eder."""
     required_fields = ["doc_id", "title", "source", "category", "content"]

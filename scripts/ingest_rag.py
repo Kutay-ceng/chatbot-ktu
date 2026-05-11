@@ -1,11 +1,12 @@
-import sys
 import os
+import sys
+
 from pymongo import MongoClient, UpdateOne
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.app.rag.document_loader import belgeleri_yukle
 from backend.app.rag.chunker import Dograyici
+from backend.app.rag.document_loader import belgeleri_yukle
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 DB_NAME = "rag_db"
@@ -33,7 +34,10 @@ def veritabanina_kaydet(parcalar):
 
     if operasyonlar:
         sonuc = collection.bulk_write(operasyonlar)
-        print(f"İşlem Tamamlandı! Yeni Eklenen: {sonuc.upserted_count}, Güncellenen: {sonuc.modified_count}")
+        print(
+            f"İşlem Tamamlandı! Yeni Eklenen: {sonuc.upserted_count}, "
+            f"Güncellenen: {sonuc.modified_count}"
+        )
         
     client.close()
 

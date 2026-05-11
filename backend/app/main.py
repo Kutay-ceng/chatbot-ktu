@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-
-
 app = FastAPI(
     title="KTU CENG Chatbot Backend",
     description="Base backend service for the KTU CENG chatbot project.",
