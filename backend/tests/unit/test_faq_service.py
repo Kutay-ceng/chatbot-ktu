@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 
 from backend.app.services.faq_service import FaqService
 

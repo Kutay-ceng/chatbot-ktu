@@ -1,3 +1,4 @@
+feature/rag-ingestion-final
 import hashlib
 
 
@@ -52,4 +53,5 @@ class Dograyici:
             baslangic += self.parca_boyutu - self.kesisme
 
         return parcalar
-    
+
+ 

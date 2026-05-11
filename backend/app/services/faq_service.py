@@ -1,4 +1,5 @@
-﻿import re
+import os
+import re
 from dataclasses import dataclass
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -16,7 +17,7 @@ CATEGORY_TO_INTENT = {
 
 # 0.50 altındaki FAQ eşleşmeleri güvenli kabul edilmez ve fallback'e düşer.
 DEFAULT_MATCH_THRESHOLD = 0.50
-INTENT_MATCH_BONUS = 0.30       # Intent eşleşirse güçlü bonus
+INTENT_MATCH_BONUS = 0.30  # Intent eşleşirse güçlü bonus
 INTENT_MISMATCH_PENALTY = 0.20  # Intent uyuşmazsa ceza (Yanlış fallback'i engellemek için)
 QUESTION_SCORE_WEIGHT = 0.70
 DOCUMENT_SCORE_WEIGHT = 0.30
@@ -48,14 +49,17 @@ GENERIC_CONTENT_WORDS = {
     "mühendisliği",
 }
 
+
 @dataclass(frozen=True)
 class FaqMatch:
     """SSS eşleşme sonucu."""
+
     answer: str
     intent: str
     confidence: float
     source: str | None = None
     matched_question: str | None = None
+
 
 def _normalize_text(text: str) -> str:
     text = re.sub(
@@ -66,8 +70,10 @@ def _normalize_text(text: str) -> str:
     )
     return " ".join(TurkishTextPreprocessor.process(text))
 
+
 def _has_all(text: str, terms: tuple[str, ...]) -> bool:
     return all(term in text for term in terms)
+
 
 def _content_tokens(text: str) -> list[str]:
     return [
@@ -78,12 +84,14 @@ def _content_tokens(text: str) -> list[str]:
         and token not in GENERIC_CONTENT_WORDS
     ]
 
+
 def _has_content_overlap(query_tokens: list[str], document_tokens: list[str]) -> bool:
     for query_token in query_tokens:
         for document_token in document_tokens:
             if query_token.startswith(document_token) or document_token.startswith(query_token):
                 return True
     return False
+
 
 def _domain_score_adjustment(
     normalized_query: str,
@@ -111,12 +119,27 @@ def _domain_score_adjustment(
 
     return adjustment
 
+
 def _faq_entries(faq_repository: FaqRepository) -> list[dict]:
     if hasattr(faq_repository, "get_all"):
         return faq_repository.get_all()
     if hasattr(faq_repository, "list_entries"):
         return faq_repository.list_entries()
     raise AttributeError("FaqRepository must implement get_all()")
+
+def _default_faq_repository() -> object:
+    repository_type = os.getenv("FAQ_REPOSITORY", "json").strip().lower()
+
+    if repository_type == "mongo":
+        from backend.app.db.mongo import get_mongo_database
+        from backend.app.repositories.mongo_faq_repository import MongoFaqRepository
+
+        collection_name = os.getenv("MONGODB_FAQ_COLLECTION", "faqs")
+        return MongoFaqRepository(
+            database=get_mongo_database(),
+            collection_name=collection_name,
+        )
+    return FaqRepository()
 
 class FaqService:
     """SSS arama ve eşleştirme servisi."""
@@ -126,7 +149,7 @@ class FaqService:
         faq_repository: FaqRepository | None = None,
         match_threshold: float = DEFAULT_MATCH_THRESHOLD,
     ) -> None:
-        self._faq_repository = faq_repository or FaqRepository()
+        self._faq_repository = faq_repository or _default_faq_repository()
         self._match_threshold = match_threshold
 
     def find_best_match(self, message: str, intent: str) -> FaqMatch | None:
@@ -140,8 +163,12 @@ class FaqService:
         document_content_tokens: list[list[str]] = []
 
         for entry in _faq_entries(self._faq_repository):
+            if entry.get("is_active", True) is False:
+                continue
+            
             question = str(entry.get("question", "")).strip()
             answer = str(entry.get("answer", "")).strip()
+
             if not question or not answer:
                 continue
 
@@ -191,10 +218,9 @@ class FaqService:
             ):
                 continue
 
-            base_score = (
-                QUESTION_SCORE_WEIGHT * float(question_scores[index])
-                + DOCUMENT_SCORE_WEIGHT * float(doc_scores[index])
-            )
+            base_score = QUESTION_SCORE_WEIGHT * float(
+                question_scores[index]
+            ) + DOCUMENT_SCORE_WEIGHT * float(doc_scores[index])
             adjusted_score = base_score + _domain_score_adjustment(
                 normalized_query,
                 normalized_questions[index],

@@ -1,8 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
 
-from backend.app.services.faq_loader import load_faq
-
 
 @lru_cache(maxsize=1)
 def _faq_path() -> Path:
@@ -20,12 +18,12 @@ def _faq_path() -> Path:
 
     raise FileNotFoundError("FAQ veri dosyası bulunamadı.")
 
-
 @lru_cache(maxsize=1)
 def _load_faq_entries() -> list[dict[str, str]]:
     """FAQ kayıtlarını doğrulayarak yükler."""
-    return load_faq(_faq_path())
+    from backend.app.services.faq_loader import load_faq
 
+    return load_faq(_faq_path())
 
 class FaqRepository:
     """FAQ veri erişim katmanı."""
