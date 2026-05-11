@@ -3,7 +3,7 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from chunker import Dograyici
+from backend.app.rag.chunker import Dograyici
 
 
 def test_ayni_metne_ayni_barkod_uretilmeli():
