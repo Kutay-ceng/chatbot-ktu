@@ -1,3 +1,4 @@
+ feature/rag-ingestion-final
 import json
 import os
 
@@ -44,3 +45,5 @@ def belgeleri_yukle(dosya_yolu):
                 raise ValueError(f"Geçersiz JSON formatı: {dosya_yolu}")
     else:
         raise ValueError(f"Desteklenmeyen dosya formatı: {uzanti}. Sadece .json ve .jsonl desteklenir.")
+        
+

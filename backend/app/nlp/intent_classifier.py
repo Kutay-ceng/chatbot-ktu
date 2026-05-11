@@ -1,9 +1,10 @@
-﻿import difflib  # <-- Benzerlik ölçümü için yerleşik kütüphaneyi ekliyoruz
+import difflib  # <-- Benzerlik ölçümü için yerleşik kütüphaneyi ekliyoruz
 import re
 
 
 class TurkishTextPreprocessor:
     """Kural tabanlı ön işleme adımları."""
+
     @staticmethod
     def lowercase_tr(text: str) -> str:
         """Türkçe karakterleri gözeterek küçük harfe çevirir."""
@@ -38,24 +39,82 @@ class IntentClassifier:
 
     INTENTS = {
         "course_info": [
-            "ders", "müfredat", "kredi", "akts", "sınav", "vize", "final",
-            "ödev", "geçme", "not", "proje", "quiz", "staj", "takvim", "dönem",
-            "içerik", "haftalık", "zorunlu", "gün", "stj", "rapor", "mazeret",
+            "ders",
+            "müfredat",
+            "kredi",
+            "akts",
+            "sınav",
+            "vize",
+            "final",
+            "ödev",
+            "geçme",
+            "not",
+            "proje",
+            "quiz",
+            "staj",
+            "takvim",
+            "dönem",
+            "içerik",
+            "haftalık",
+            "zorunlu",
+            "gün",
+            "stj",
+            "rapor",
+            "mazeret",
             "sağlık",
         ],
         "academic_staff": [
-            "hoca", "profesör", "akademisyen", "öğretim", "asistan",
-            "danışman", "görevli", "başkan", "anabilim", "randevu", "dal"
+            "hoca",
+            "profesör",
+            "akademisyen",
+            "öğretim",
+            "asistan",
+            "danışman",
+            "görevli",
+            "başkan",
+            "anabilim",
+            "randevu",
+            "dal",
         ],
         "contact_info": [
-            "iletişim", "telefon", "mail", "posta", "adres", "ulaşım",
-            "konum", "fax", "ofis", "oda", "laboratuvar", "teknik", "sorumlu", "sekreter",
-            "numara", "dilekçe", "itiraz", "eposta",
+            "iletişim",
+            "telefon",
+            "mail",
+            "posta",
+            "adres",
+            "ulaşım",
+            "konum",
+            "fax",
+            "ofis",
+            "oda",
+            "laboratuvar",
+            "teknik",
+            "sorumlu",
+            "sekreter",
+            "numara",
+            "dilekçe",
+            "itiraz",
+            "eposta",
         ],
         "general_info": [
-            "üniversite", "kampüs", "tarihçe", "yurt", "burs",
-            "yemekhane", "kütüphane", "program", "eğitim", "lisans", "hazırlık",
-            "ingilizce", "unvan", "ktü", "bilgisayar", "mühendis", "öğrenci", "yemek"
+            "üniversite",
+            "kampüs",
+            "tarihçe",
+            "yurt",
+            "burs",
+            "yemekhane",
+            "kütüphane",
+            "program",
+            "eğitim",
+            "lisans",
+            "hazırlık",
+            "ingilizce",
+            "unvan",
+            "ktü",
+            "bilgisayar",
+            "mühendis",
+            "öğrenci",
+            "yemek",
         ],
     }
 
@@ -78,9 +137,9 @@ class IntentClassifier:
                     if token.startswith(keyword):
                         intent_scores[intent] += 1
                         break
-                    
+
                     # 2. Yazım hatası toleransı (Fuzzy Matching)
-                    # ÇOK ÖNEMLİ: Kısa kelimelerde (ör: "da" vs "dal") saçma 
+                    # ÇOK ÖNEMLİ: Kısa kelimelerde (ör: "da" vs "dal") saçma
                     # eşleşmeleri önlemek için uzunluk şartı
                     if len(token) >= 4 and len(keyword) >= 4:
                         similarity = difflib.SequenceMatcher(None, token, keyword).ratio()
@@ -90,7 +149,7 @@ class IntentClassifier:
 
         scores = list(intent_scores.values())
         total_matches = sum(scores)
-        
+
         if total_matches == 0:
             return "unknown", 0.0
 
