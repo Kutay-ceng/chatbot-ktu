@@ -52,5 +52,8 @@ def belgeleri_yukle(dosya_yolu):
         raise ValueError(
             f"Desteklenmeyen dosya formatı: {uzanti}. Sadece .json ve .jsonl desteklenir."
         )
-        
+class DocumentLoader:
+    pass
+
+SimpleDocumentLoader = DocumentLoader
 
