@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.api.chat import router as chat_router
+from backend.app.api.routes.chat import router as chat_router
 
 app = FastAPI(
     title="KTU CENG Chatbot Backend",
