@@ -2,11 +2,11 @@ import json
 from unittest.mock import MagicMock, patch
 
 import pytest
-from scripts.ingest_rag import veritabanina_kaydet
 from pymongo import UpdateOne
 
 from backend.app.rag.chunker import Dograyici
 from backend.app.rag.document_loader import belgeleri_yukle, validate_document
+from scripts.ingest_rag import veritabanina_kaydet
 
 
 def test_validate_document_eksik_alan():
