@@ -55,5 +55,7 @@ class Dograyici:
             baslangic += self.parca_boyutu - self.kesisme
 
         return parcalar
+Chunker = Dograyici
+SimpleChunker = Dograyici
 
  

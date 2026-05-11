@@ -2,7 +2,7 @@ import json
 from unittest.mock import MagicMock, patch
 
 import pytest
-from ingest_rag import veritabanina_kaydet
+from scripts.ingest_rag import veritabanina_kaydet
 from pymongo import UpdateOne
 
 from backend.app.rag.chunker import Dograyici
@@ -70,7 +70,7 @@ def test_metadata_ve_parcalama():
     assert parcalar[0]["doc_id"] == "belge1"
     assert parcalar[0]["title"] == "Test"
 
-@patch("ingest_rag.MongoClient") 
+@patch("scripts.ingest_rag.MongoClient")
 def test_veritabanina_kaydet_upsert(mock_mongo_client):
     mock_db = MagicMock()
     mock_collection = MagicMock()
