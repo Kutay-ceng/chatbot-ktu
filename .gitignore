@@ -226,3 +226,4 @@ TestResults/
 slnx.sqlite
 DocumentLayout.json
 DocumentLayout.backup.json
+.DS_Store
