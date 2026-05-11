@@ -15,7 +15,13 @@ def test_validate_document_eksik_alan():
         validate_document(eksik_belge)
 
 def test_json_ve_jsonl_yukleme(tmp_path):
-    gecerli_belge = {"doc_id": "1", "title": "T", "source": "S", "category": "C", "content": "Metin"}
+    gecerli_belge = {
+        "doc_id": "1", 
+        "title": "T", 
+        "source": "S", 
+        "category": "C", 
+        "content": "Metin"
+    }
     
     jsonl_dosya = tmp_path / "test.jsonl"
     jsonl_dosya.write_text(json.dumps(gecerli_belge) + "\n")
@@ -23,7 +29,6 @@ def test_json_ve_jsonl_yukleme(tmp_path):
     assert len(belgeler) == 1
     assert belgeler[0]["doc_id"] == "1"
 
-    # JSON Testi
     json_dosya = tmp_path / "test.json"
     json_dosya.write_text(json.dumps([gecerli_belge]))
     belgeler_json = list(belgeleri_yukle(str(json_dosya)))
@@ -55,7 +60,6 @@ def test_metadata_ve_parcalama():
     parcalar = dograyici.parcalara_bol(ornek_belge)
     
     assert len(parcalar) == 2
-    # İlk parça (0'dan 10'a)
     assert parcalar[0]["chunk_text"] == "0123456789"
     assert parcalar[0]["start_char"] == 0
     assert parcalar[0]["end_char"] == 10

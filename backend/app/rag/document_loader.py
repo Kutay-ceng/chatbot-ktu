@@ -1,4 +1,3 @@
- feature/rag-ingestion-final
 import json
 import os
 
@@ -8,7 +7,10 @@ def validate_document(doc):
     required_fields = ["doc_id", "title", "source", "category", "content"]
     for field in required_fields:
         if field not in doc or not str(doc[field]).strip():
-            raise ValueError(f"Geçersiz belge: '{field}' alanı eksik veya boş. Belge ID: {doc.get('doc_id', 'Bilinmiyor')}")
+            raise ValueError(
+                f"Geçersiz belge: '{field}' alanı eksik veya boş. "
+                f"Belge ID: {doc.get('doc_id', 'Bilinmiyor')}"
+            )
     return True
 
 def belgeleri_yukle(dosya_yolu):
@@ -29,7 +31,10 @@ def belgeleri_yukle(dosya_yolu):
                         validate_document(doc)
                         yield doc
                     except json.JSONDecodeError:
-                        raise ValueError(f"JSON çözme hatası. Dosya: {dosya_yolu}, Satır: {satir_no}")
+                        raise ValueError(
+                            f"JSON çözme hatası. Dosya: {dosya_yolu}, "
+                            f"Satır: {satir_no}"
+                        )
     
     elif uzanti == '.json':
         with open(dosya_yolu, 'r', encoding='utf-8') as dosya:
@@ -44,6 +49,8 @@ def belgeleri_yukle(dosya_yolu):
             except json.JSONDecodeError:
                 raise ValueError(f"Geçersiz JSON formatı: {dosya_yolu}")
     else:
-        raise ValueError(f"Desteklenmeyen dosya formatı: {uzanti}. Sadece .json ve .jsonl desteklenir.")
+        raise ValueError(
+            f"Desteklenmeyen dosya formatı: {uzanti}. Sadece .json ve .jsonl desteklenir."
+        )
         
 

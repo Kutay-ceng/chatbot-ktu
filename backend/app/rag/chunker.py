@@ -1,4 +1,3 @@
-feature/rag-ingestion-final
 import hashlib
 
 
@@ -7,7 +6,10 @@ class Dograyici:
         if parca_boyutu <= 0:
             raise ValueError("Parça boyutu (chunk_size) 0'dan büyük olmalıdır.")
         if kesisme >= parca_boyutu:
-            raise ValueError("Kesişme (overlap) değeri, parça boyutundan küçük olmalıdır. Aksi takdirde sonsuz döngü oluşur.")
+            raise ValueError(
+                "Kesişme (overlap) değeri, parça boyutundan küçük olmalıdır. "
+                "Aksi takdirde sonsuz döngü oluşur."
+            )
         
         self.parca_boyutu = parca_boyutu
         self.kesisme = kesisme
