@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from backend.app.api.chat import router as chat_router 
+# main.py dosyasının en üstlerine bir yere (diğer importların altına) bunu ekle:
+
 app = FastAPI(
     title="KTU CENG Chatbot Backend",
     description="Base backend service for the KTU CENG chatbot project.",
@@ -19,6 +22,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(chat_router)
 
 @app.get("/")
 def read_root():
