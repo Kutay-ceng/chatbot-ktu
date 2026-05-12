@@ -25,7 +25,7 @@ class RagDocument:
 @dataclass(frozen=True)
 
 
-class RagChunk(...):
+class RagChunk:
     id: str
     document_id: str
     text: str
