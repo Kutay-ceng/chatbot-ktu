@@ -1,6 +1,8 @@
 import json
 import os
 
+from backend.app.rag.models import RagDocument, RagSource
+
 
 def validate_document(doc):
     """Belgenin gerekli tüm alanlara sahip olup olmadığını kontrol eder."""
@@ -52,14 +54,45 @@ def belgeleri_yukle(dosya_yolu):
         raise ValueError(
             f"Desteklenmeyen dosya formatı: {uzanti}. Sadece .json ve .jsonl desteklenir."
         )
-    
-class SimpleDocumentLoader:
-    """Eski sistemlerle uyumluluk için bırakılan sınıf yapısı."""
-    def load(self, *args, **kwargs):
 
-        return belgeleri_yukle(*args, **kwargs)
+class SimpleDocumentLoader:
+    """Eski testlerle ve yeni dosya okuma sistemiyle uyumlu Document Loader"""
+    
+    def __init__(self, entries=None, file_path=None):
+        self.entries = entries
+        self.file_path = file_path
+
+    def load(self):
+        raw_docs = []
+        
+        if self.entries is not None:
+            raw_docs = self.entries
+        elif self.file_path is not None:
+            raw_docs = list(belgeleri_yukle(self.file_path))
+
+        documents = []
+        for item in raw_docs:
+            doc_id = item.get("id") or item.get("doc_id") or "unknown"
+            title = item.get("title", "")
+            text = item.get("text") or item.get("content") or ""
+            
+            source_obj = None
+            source_data = item.get("source")
+            
+            if isinstance(source_data, dict):
+                source_obj = RagSource(
+                    title=source_data.get("title", ""),
+                    url=source_data.get("url", ""),
+                    source_type=source_data.get("type", source_data.get("source_type", ""))
+                )
+            doc = RagDocument(
+                id=doc_id,
+                title=title,
+                text=text,
+                source=source_obj
+            )
+            documents.append(doc)
+
+        return documents
 
 DocumentLoader = SimpleDocumentLoader
-
-
-

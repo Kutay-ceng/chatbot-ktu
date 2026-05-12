@@ -1,65 +1,72 @@
 import hashlib
 
+from backend.app.rag.models import RagChunk
 
-class Dograyici:
-    def __init__(self, parca_boyutu=100, kesisme=20):
-        if parca_boyutu <= 0:
-            raise ValueError("Parça boyutu (chunk_size) 0'dan büyük olmalıdır.")
-        if kesisme >= parca_boyutu:
+
+class SimpleChunker:
+
+    def __init__(self, chunk_size=100, overlap=20):
+        if chunk_size <= 0:
+            raise ValueError("chunk_size 0'dan büyük olmalıdır.")
+        if overlap >= chunk_size:
             raise ValueError(
-                "Kesişme (overlap) değeri, parça boyutundan küçük olmalıdır. "
+                "overlap değeri, chunk_size'dan küçük olmalıdır. "
                 "Aksi takdirde sonsuz döngü oluşur."
             )
         
-        self.parca_boyutu = parca_boyutu
-        self.kesisme = kesisme
+        self.chunk_size = chunk_size
+        self.overlap = overlap
 
-    def deterministik_chunk_id_uret(self, belge_id, chunk_index, metin):
-        benzersiz_kelime = f"{belge_id}-chunk{chunk_index}-{metin}"
+    def _generate_chunk_id(self, doc_id, chunk_index, text):
+        benzersiz_kelime = f"{doc_id}-chunk{chunk_index}-{text}"
         return hashlib.sha256(benzersiz_kelime.encode('utf-8')).hexdigest()
 
-    def parcalara_bol(self, belge):
-        icerik = belge.get("content", "")
+    def chunk(self, document):
+        icerik = (
+            getattr(document, "text", "") 
+            if hasattr(document, "text") 
+            else document.get("text", document.get("content", ""))
+        )
+        
+        doc_id = (
+            getattr(document, "id", "") 
+            if hasattr(document, "id") 
+            else document.get("id", document.get("doc_id", ""))
+        )
+        
+        parcalar = []
+        baslangic = 0
+        
         parcalar = []
         baslangic = 0
         chunk_index = 0
 
         while baslangic < len(icerik):
-            bitis = min(baslangic + self.parca_boyutu, len(icerik))
+            bitis = min(baslangic + self.chunk_size, len(icerik))
             kesilen_metin = icerik[baslangic:bitis]
             
             if not kesilen_metin.strip():
-                baslangic += self.parca_boyutu - self.kesisme
+                baslangic += self.chunk_size - self.overlap
                 continue
 
-            chunk_id = self.deterministik_chunk_id_uret(belge["doc_id"], chunk_index, kesilen_metin)
-            
+            chunk_id = self._generate_chunk_id(doc_id, chunk_index, kesilen_metin)
             content_hash = hashlib.sha256(kesilen_metin.encode('utf-8')).hexdigest()
 
-            yeni_parca = {
-                "chunk_id": chunk_id,  
-                "content_hash": content_hash, 
-                "doc_id": belge["doc_id"],
-                "title": belge["title"],
-                "source": belge["source"],
-                "category": belge["category"],
-                "chunk_text": kesilen_metin,
-                "chunk_index": chunk_index,
-                "start_char": baslangic,
-                "end_char": bitis,
-                "chunk_size": self.parca_boyutu,
-                "chunk_overlap": self.kesisme,
-                "embedding": None  
-            }
+            yeni_parca = RagChunk(
+                id=chunk_id,               
+                document_id=doc_id,
+                text=kesilen_metin,
+                start=baslangic,
+                end=bitis,
+                chunk_id=chunk_id,         
+                content_hash=content_hash  
+            )
             
             parcalar.append(yeni_parca)
             
             chunk_index += 1
-            baslangic += self.parca_boyutu - self.kesisme
+            baslangic += self.chunk_size - self.overlap
 
         return parcalar
-    
-Chunker = Dograyici
-SimpleChunker = Dograyici
 
- 
+Chunker = SimpleChunker
