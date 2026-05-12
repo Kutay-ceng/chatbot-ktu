@@ -59,6 +59,7 @@ class Dograyici:
 
         return parcalar
     
+Chunker = Dograyici
 SimpleChunker = Dograyici
 
  
