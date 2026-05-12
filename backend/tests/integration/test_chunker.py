@@ -3,15 +3,16 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from backend.app.rag.chunker import Dograyici
+from backend.app.rag.chunker import SimpleChunker
 
 
 def test_ayni_metne_ayni_barkod_uretilmeli():
-    dograyici = Dograyici()
+    chunker = SimpleChunker()
     metin = "Test metni"
-    belge = {"doc_id": "1"}
+    doc_id = "1"
+    chunk_index = 0
     
-    hash1 = dograyici.barkod_uret(metin, belge["doc_id"])
-    hash2 = dograyici.barkod_uret(metin, belge["doc_id"])
+    hash1 = chunker._generate_chunk_id(doc_id, chunk_index, metin)
+    hash2 = chunker._generate_chunk_id(doc_id, chunk_index, metin)
     
     assert hash1 == hash2
