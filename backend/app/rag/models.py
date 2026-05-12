@@ -23,14 +23,17 @@ class RagDocument:
 
 
 @dataclass(frozen=True)
-class RagChunk:
+
+
+class RagChunk(...):
     id: str
     document_id: str
     text: str
     start: int
     end: int
-    source: RagSource | None = None
-    metadata: dict[str, Any] | None = None
+    
+    chunk_id: str | None = None
+    content_hash: str | None = None
 
 
 @dataclass(frozen=True)
