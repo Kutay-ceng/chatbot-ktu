@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Iterable
 
 from .chunker import Chunker, SimpleChunker
-from .models import RagDocument, RagSearchResult, RagSource
+from .models import RagDocument, RagSearchResult
 from .vector_store import VectorStore
 
 
@@ -22,9 +22,9 @@ class RetrievalService:
 
     def retrieve(self, query: str, top_k: int = 3) -> RagSearchResult:
         chunks = self._vector_store.search(query, top_k=top_k)
-
-        sources: list[RagSource] = []
-        seen_source_keys: set[tuple[str, str | None, str | None]] = set()
+        
+        sources = []
+        seen_source_keys = set()
 
         for chunk in chunks:
             if chunk.source is None:
@@ -36,3 +36,4 @@ class RetrievalService:
                 sources.append(chunk.source)
 
         return RagSearchResult(query=query, chunks=chunks, sources=sources)
+    
