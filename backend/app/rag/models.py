@@ -35,6 +35,8 @@ class RagChunk:
     chunk_id: str | None = None
     content_hash: str | None = None
 
+    source: RagSource | None = None
+
 
 @dataclass(frozen=True)
 class RagSearchResult:
