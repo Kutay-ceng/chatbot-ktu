@@ -33,9 +33,12 @@ class Dograyici:
                 continue
 
             chunk_id = self.deterministik_chunk_id_uret(belge["doc_id"], chunk_index, kesilen_metin)
+            
+            content_hash = hashlib.sha256(kesilen_metin.encode('utf-8')).hexdigest()
 
             yeni_parca = {
                 "chunk_id": chunk_id,  
+                "content_hash": content_hash, 
                 "doc_id": belge["doc_id"],
                 "title": belge["title"],
                 "source": belge["source"],
@@ -55,7 +58,7 @@ class Dograyici:
             baslangic += self.parca_boyutu - self.kesisme
 
         return parcalar
-Chunker = Dograyici
+    
 SimpleChunker = Dograyici
 
  
